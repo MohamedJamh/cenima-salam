@@ -6,7 +6,16 @@
 </template>
 <script>
 export default {
-    
+    created(){
+        if(!localStorage.getItem('token')){
+            this.$router.push('login')
+        }
+    },
+    data(){
+        return {
+            user: null
+        }
+    }
 }
 </script>
 <style>

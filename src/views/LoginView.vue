@@ -17,6 +17,11 @@
 <script>
 import loginForm from "../components/LoginForm.vue";
 export default {
+    created(){
+        if(localStorage.getItem('token')){
+            this.$router.push('/')
+        }
+    },
     components:{
         loginForm
     }
