@@ -1,0 +1,120 @@
+<template >
+    <h2 class="tw-text-3xl tw-my-5">Log in and book your ticket now !</h2>
+    <div class="tw-relative tw-block tw-rounded-lg tw-shadow-lg tw-px-6 tw-py-12 md:tw-px-12 lg:tw--mr-14" style="background: hsla(0, 0%, 100%, 0.55); backdrop-filter: blur(30px); z-index: 1">
+        <v-form @submit.prevent="handelLogin()" v-model="valid">
+            <v-container>
+                <v-row>
+                    <v-col
+                    cols="12"
+                    md="12"
+                    >
+                        <v-text-field
+                            v-model="name"
+                            :rules="nameRules"
+                            label="Full name"
+                            type="text"
+                            required
+                        ></v-text-field>
+                    </v-col>
+                    <v-col
+                    cols="12"
+                    md="12"
+                    >
+                        <v-text-field
+                            v-model="email"
+                            :rules="emailRules"
+                            label="E-mail"
+                            required
+                        ></v-text-field>
+                    </v-col>
+                    <v-col
+                    cols="12"
+                    md="12"
+                    >
+                        <v-text-field
+                            v-model="password"
+                            :rules="passwordRules"
+                            label="Password"
+                            type="password"
+                            required
+                        ></v-text-field>
+                    </v-col>
+                    <v-col
+                    cols="12"
+                    md="12"
+                    >
+                        <v-text-field
+                            v-model="passwordConfirmation"
+                            :rules="passwordConfirmationRules"
+                            label="Password Confirmation"
+                            type="password"
+                            required
+                        ></v-text-field>
+                    </v-col>
+                </v-row>
+                <v-btn type="submit" :loading="log && valid" @click="log = !log" class="tw-float-right">Sign up</v-btn>
+            </v-container>
+        </v-form>
+    </div>
+</template>
+<script>
+import axios from 'axios'
+
+export default {
+    data: () => ({
+        log : false,
+        name : '',
+        nameRules : [
+            value => {
+                if (value) return true
+                return 'Name is required.'
+            }
+        ],
+        email: '',
+        emailRules: [
+            value => {
+                if (value) return true
+                return 'E-mail is required.'
+            },
+            value => {
+            if (/.+@.+\..+/.test(value)) return true
+            return 'E-mail must be valid.'
+            },
+        ],
+        password : '',
+        passwordRules:[
+            value => {
+                if (value) return true
+                return 'Password is required.'
+            }
+        ],
+        passwordConfirmation : '',
+        passwordConfirmationRules:[
+            value => {
+                if (value) return true
+                return 'Password is required.'
+            },
+            value =>{
+                if(value != this.password) return 'Password does not match.'
+            }
+        ],
+    }),
+    methods:{
+        async handelLogin(){
+            const response = await axios.post('login',
+            {
+                email : this.email,
+                password : this.password,
+            })
+            if(response.data.status){
+                localStorage.setItem('token',response.data.authorisation.token)
+                this.$router.push('/')
+            }
+            this.log = false;
+        }
+    }
+}
+</script>
+<style>
+    
+</style>
