@@ -9,8 +9,11 @@
                     md="12"
                     >
                         <v-text-field
+                            v-model="name"
+                            :rules="nameRules"
                             type="text"
                             label="Full name"
+                            required
                         ></v-text-field>
                     </v-col>
                     <v-col
@@ -110,11 +113,8 @@ export default {
                 this.$router.push('/')
             })
             .catch(error => {
-                // console.log(error.response.data.errors)
+                console.log(error.response.data.errors)
             })
-            // if(response.data.status){
-                
-            // }
             this.log = false;
         }
     }
