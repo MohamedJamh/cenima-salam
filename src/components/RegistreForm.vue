@@ -9,11 +9,8 @@
                     md="12"
                     >
                         <v-text-field
-                            v-model="name"
-                            :rules="nameRules"
-                            label="Full name"
                             type="text"
-                            required
+                            label="Full name"
                         ></v-text-field>
                     </v-col>
                     <v-col
@@ -45,14 +42,17 @@
                     >
                         <v-text-field
                             v-model="passwordConfirmation"
-                            :rules="passwordConfirmationRules"
+                            :rules="[confirmPassword,confirmPasswordMatch]"
                             label="Password Confirmation"
                             type="password"
                             required
                         ></v-text-field>
                     </v-col>
                 </v-row>
-                <v-btn type="submit" :loading="log && valid" @click="log = !log" class="tw-float-right">Sign up</v-btn>
+                <div>
+                    <router-link to="/Login">Already have an account ?</router-link>
+                    <v-btn type="submit" :loading="log && valid" @click="log = !log" class="tw-float-right">Sign up</v-btn>
+                </div>
             </v-container>
         </v-form>
     </div>
@@ -62,6 +62,7 @@ import axios from 'axios'
 
 export default {
     data: () => ({
+        valid : false,
         log : false,
         name : '',
         nameRules : [
@@ -89,27 +90,31 @@ export default {
             }
         ],
         passwordConfirmation : '',
-        passwordConfirmationRules:[
-            value => {
-                if (value) return true
-                return 'Password is required.'
-            },
-            value =>{
-                if(value != this.password) return 'Password does not match.'
-            }
-        ],
     }),
     methods:{
+        confirmPassword(value){
+            if(!value) return 'Confirmation is required'
+        },
+        confirmPasswordMatch(value){
+            if(this.password != value) return 'Password does not match'
+        },
         async handelLogin(){
-            const response = await axios.post('login',
+            await axios.post('register',
             {
+                name : this.name,
                 email : this.email,
                 password : this.password,
             })
-            if(response.data.status){
+            .then(response => {
                 localStorage.setItem('token',response.data.authorisation.token)
                 this.$router.push('/')
-            }
+            })
+            .catch(error => {
+                // console.log(error.response.data.errors)
+            })
+            // if(response.data.status){
+                
+            // }
             this.log = false;
         }
     }

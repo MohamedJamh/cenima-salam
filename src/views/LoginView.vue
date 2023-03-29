@@ -28,7 +28,7 @@ export default {
 }
 </script>
 <style scoped >
-    @media (min-width: 992px) {
+    /* @media (min-width: 992px) {
       .tw-rotate-lg-6 {
         transform: rotate(6deg);
       }
@@ -36,5 +36,5 @@ export default {
 
     .tw-fancy-border-radius {
       border-radius: 53% 47% 52% 48% / 36% 41% 59% 64%;
-    }
+    } */
 </style>

@@ -28,7 +28,10 @@
                         ></v-text-field>
                     </v-col>
                 </v-row>
-                <v-btn type="submit" :loading="log && valid" @click="log = !log" class="tw-float-right">login</v-btn>
+                <div>
+                    <router-link to="/Register">You don't have an account ?</router-link>
+                    <v-btn type="submit" :loading="log && valid" @click="log = !log" class="tw-float-right">login</v-btn>
+                </div>
             </v-container>
     </v-form>
     </div>
