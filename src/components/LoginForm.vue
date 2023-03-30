@@ -9,10 +9,10 @@
                     md="12"
                     >
                         <v-text-field
-                            v-model="email"
-                            :rules="emailRules"
-                            label="E-mail"
-                            required
+                        v-model="email"
+                        :rules="emailRules"
+                        label="E-mail"
+                        required
                         ></v-text-field>
                     </v-col>
                     <v-col
@@ -41,6 +41,7 @@ import axios from 'axios'
 
 export default {
     data: () => ({
+        valid : false,
         log : false,
         email: '',
         emailRules: [
@@ -65,16 +66,18 @@ export default {
     }),
     methods:{
         async handelLogin(){
-            const response = await axios.post('login',
-            {
-                email : this.email,
-                password : this.password,
-            })
-            if(response.data.status){
-                localStorage.setItem('token',response.data.authorisation.token)
-                this.$router.push('/')
+            if(this.valid){
+                const response = await axios.post('login',
+                {
+                    email : this.email,
+                    password : this.password,
+                })
+                if(response.data.status){
+                    localStorage.setItem('token',response.data.authorisation.token)
+                    this.$router.push('/')
+                }
+                this.log = false;
             }
-            this.log = false;
         }
     }
 }

@@ -102,20 +102,23 @@ export default {
             if(this.password != value) return 'Password does not match'
         },
         async handelLogin(){
-            await axios.post('register',
-            {
-                name : this.name,
-                email : this.email,
-                password : this.password,
-            })
-            .then(response => {
-                localStorage.setItem('token',response.data.authorisation.token)
-                this.$router.push('/')
-            })
-            .catch(error => {
-                console.log(error.response.data.errors)
-            })
-            this.log = false;
+            if(this.valid){
+                await axios.post('register',
+                {
+                    name : this.name,
+                    email : this.email,
+                    password : this.password,
+                })
+                .then(response => {
+                    localStorage.setItem('token',response.data.authorisation.token)
+                    this.$router.push('/')
+                })
+                .catch(error => {
+                    console.log(error.response.data.errors)
+                })
+                this.log = false;
+            }
+            
         }
     }
 }

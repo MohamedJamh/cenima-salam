@@ -7,7 +7,7 @@
                         <loginForm />
                     </div>
                     <div>
-                        <img src="../assets/img/logbanner.jpg" class="tw-w-full tw-shadow-lg tw-fancy-border-radius tw-rotate-lg-6" alt="">
+                        <img src="@/assets/img/logbanner.jpg" class="tw-w-full tw-shadow-lg tw-fancy-border-radius tw-rotate-lg-6" alt="">  
                     </div>
                 </div>
             </div>
@@ -15,7 +15,7 @@
     </div>
 </template>
 <script>
-import loginForm from "../components/LoginForm.vue";
+import loginForm from "@/components/LoginForm.vue";
 export default {
     created(){
         if(localStorage.getItem('token')){

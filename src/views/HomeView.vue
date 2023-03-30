@@ -1,5 +1,6 @@
 <template >
     <div>
+        {{ $store.state.test }}
         <h2>this is Home page 'yey'</h2>
         <router-link to="/about">Go to about</router-link>
     </div>
@@ -7,9 +8,7 @@
 <script>
 export default {
     created(){
-        if(!localStorage.getItem('token')){
-            this.$router.push('login')
-        }
+        this.$store.dispatch('loggedIn')
     },
     data(){
         return {

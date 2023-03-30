@@ -7,7 +7,7 @@
                         <registerForm />
                     </div>
                     <div>
-                        <img src="../assets/img/logbanner.jpg" class="tw-w-full tw-shadow-lg tw-fancy-border-radius tw-rotate-lg-6" alt="">
+                        <img src="@/assets/img/logbanner.jpg" class="tw-w-full tw-shadow-lg tw-fancy-border-radius tw-rotate-lg-6" alt="">
                     </div>
                 </div>
             </div>
@@ -15,7 +15,7 @@
     </div>
 </template>
 <script>
-import registerForm from "../components/RegistreForm.vue";
+import registerForm from "@/components/RegistreForm.vue";
 export default {
     components:{
         registerForm
