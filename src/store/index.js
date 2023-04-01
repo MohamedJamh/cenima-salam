@@ -4,7 +4,6 @@ import router from '@/router'
 export default createStore({
   state () {
     return {
-        test : 'test',
         token : null
     }
   },
@@ -29,7 +28,7 @@ export default createStore({
   },
   getters:{
     getToken(state){
-        return state.token
+      return state.token
     }
   },
   modules:{
