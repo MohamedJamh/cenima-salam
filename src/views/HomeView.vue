@@ -15,7 +15,6 @@
                         <img class="tw-rounded-full tw-w-7 tw-h-7 tw-shadow-lg tw-border tw-border-white" src="https://api.lorem.space/image/face?w=32&amp;h=32&amp;hash=zsfj8cck" alt="" srcset="">
                         <span class="tw-pl-4 tw-text-xs tw-drop-shadow-lg">+8 friends are watching</span>
                     </div>
-                    
                     <div class="tw-bg-gradient-to-r tw-from-black/30 tw-to-transparent tw--mx-7 tw--mb-6 tw-px-7 tw-pb-6 tw-pt-2">
                         <span class="tw-uppercase tw-text-3xl tw-font-semibold tw-drop-shadow-lg">Inception</span>
                         <div class="tw-text-xs tw-text-gray-200 tw-mt-2">
