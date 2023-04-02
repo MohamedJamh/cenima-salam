@@ -3,11 +3,11 @@
         <div class="tw-flex tw-flex-col tw-justify-between tw-mt-4 tw-bg-black/10 tw-bg-blend-multiply tw-rounded-3xl tw-h-96 tw-overflow-hidden tw-bg-cover tw-bg-top tw-px-7 tw-pt-4 tw-pb-6 tw-text-white" style="background-image: url('https://image.tmdb.org/t/p/original/hZkgoQYus5vegHoetLkCJzb17zJ.jpg');">
             <div></div>
             <div class="tw-bg-gradient-to-r tw-from-black/30 tw-to-transparent tw--mx-7 tw--mb-6 tw-px-7 tw-pb-6 tw-pt-2">
-                <span class="tw-uppercase tw-text-3xl tw-font-semibold tw-drop-shadow-lg">Inception</span>
+                <span class="tw-uppercase tw-text-3xl tw-font-semibold tw-drop-shadow-lg">{{ this.movie.title }}</span>
                 <div class="tw-text-xs tw-text-gray-200 tw-mt-2">
-                    <a href="#" class="">Action</a>,
-                    <a href="#" class="">Adventure</a>,
-                    <a href="#" class="">Sci-Fi</a>
+                    <span>Action</span>,
+                    <span>Adventure</span>,
+                    <span>Sci-Fi</span>
                 </div>
                 <div class="tw-mt-4 tw-flex tw-space-x-3 tw-items-center">
                     <a href="#" class="tw-px-5 tw-py-2.5 tw-bg-red-600 hover:tw-bg-red-700 tw-rounded-lg tw-text-xs tw-inline-block">Watch</a>
@@ -23,7 +23,11 @@
 </template>
 <script>
 export default {
-    name:'moviebanner'
+    name:'moviebanner',
+    props:['movie'],
+    created(){
+
+    }
 }
 </script>
 <style >
