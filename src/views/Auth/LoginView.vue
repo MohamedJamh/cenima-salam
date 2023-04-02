@@ -33,7 +33,6 @@ export default {
         transform: rotate(6deg);
       }
     }
-
     .tw-fancy-border-radius {
       border-radius: 53% 47% 52% 48% / 36% 41% 59% 64%;
     } */

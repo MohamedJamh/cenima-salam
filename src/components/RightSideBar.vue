@@ -1,10 +1,8 @@
 <template>
     <aside class="tw-w-1/5 tw-py-10 tw-px-10 tw-min-w-min tw-border-l tw-border-zinc-700 tw-hidden lg:tw-block">
-
         <searchbar
 
         />
-
         <sidemoviesection
             title="Popular"
             movies=""
@@ -12,7 +10,7 @@
         />
 
         <sidemoviesection
-            title="Favorits"
+            title="Favorites"
             movies=""
             all-movies-path=""
         />

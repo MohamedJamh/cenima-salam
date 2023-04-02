@@ -31,7 +31,7 @@ export default {
     },
     computed:{
         numberCols(){
-            return 'sm:tw-grid-cols-'+this.nombrePoster
+            return 'sm:tw-grid-cols-'+ this.nombrePoster
         }
     }
 
