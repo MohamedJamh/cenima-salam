@@ -11,7 +11,7 @@
                     <moviebanner />
                     
                     <moviesection
-                    component-name="movieposter"
+                    component-name="long"
                     :nombre-poster="4"
                     section-title="Premier"
                     movies=""
@@ -22,9 +22,9 @@
 
                 <section class="tw-mt-9">
                     <moviesection 
-                    component-name="widemovieposter"
+                    component-name="wide"
                     :nombre-poster="3"
-                    section-title="Popular"
+                    section-title="Upcoming"
                     movies=""
                     all-movies-path="" />
                 </section>

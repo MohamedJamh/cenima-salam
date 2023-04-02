@@ -4,15 +4,28 @@
             <span class="tw-font-semibold tw-text-white tw-text-base">{{ this.sectionTitle }}</span>
             <arrowcirclebutton link="/Login" />
         </div>
-        <div class="tw-mt-4 tw-grid tw-grid-cols-2 tw-gap-x-5 tw-gap-y-5" :class="numberCols">
-            <component
-                :is="this.componentName"
+        <div 
+        class="tw-mt-4 tw-gap-x-5 tw-gap-y-5 tw-grid tw-grid-cols-2 sm:tw-grid-cols-4" 
+        v-if="this.componentName == 'long'">
+            <movieposter
                 v-for="n in this.nombrePoster"
                 :key="n"
                 img-path=""
                 title=""
                 rate=""
-            ></component>
+            />
+        </div>
+        <div 
+        class="tw-mt-4 tw-gap-x-5 tw-gap-y-5 tw-grid tw-grid-cols-2 sm:tw-grid-cols-3"
+        v-if="this.componentName == 'wide'">
+            <widemovieposter
+                v-if="this.componentName == 'wide'"
+                v-for="n in this.nombrePoster"
+                :key="n"
+                img-path=""
+                title=""
+                rate=""
+            />
         </div>
     </div>
 </template>
