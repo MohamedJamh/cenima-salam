@@ -1,5 +1,5 @@
 <template lang="">
-    <section class="tw-bg-zinc-900">
+    <section >
         <div class="tw-flex tw-min-h-screen xl:tw-max-w-screen-2xl xl:tw-mx-auto xl:tw-border-x-2 xl:tw-border-zinc-700"
             v-if=(popular)
             >

@@ -6,7 +6,7 @@ export default createStore({
     state () {
         return {
             token : null,
-            user:null,
+            user:'you',
             popularMovies : [],
             premierMovies : [],
             upcomingMovies : []
@@ -31,6 +31,7 @@ export default createStore({
                   state.upcomingMovies = data[0]
                   break;
             }
+            console.log(state.popularMovies)
         }
     },
     actions: {
@@ -45,6 +46,9 @@ export default createStore({
         }
     },
     getters:{
+        getUser(state){
+            return state.user
+        },
         getToken(state){
             return state.token
         },
