@@ -14,7 +14,9 @@
                 />
             </li>
             <li class="tw-pt-1">
-                <a href="#" class="tw-px-5 tw-py-2.5 tw-bg-red-600 hover:tw-bg-red-700 tw-rounded-lg tw-text-center tw-font-medium tw-block tw-text-white">See More</a>
+                <router-link :to="allMoviesPath">
+                    <a href="#" class="tw-px-5 tw-py-2.5 tw-bg-red-600 hover:tw-bg-red-700 tw-rounded-lg tw-text-center tw-font-medium tw-block tw-text-white">See More</a>
+                </router-link>
             </li>
         </ul>
     </div>

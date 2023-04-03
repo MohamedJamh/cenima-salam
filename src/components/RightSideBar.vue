@@ -4,17 +4,17 @@
 
         />
         <sidemoviesection
-            title="Popular"
-            :movies="this.$store.getters.getPopular"
-            all-movies-path=""
+            v-for="sectionData in sideSectionsData"
+            :title="sectionData.title"
+            :movies="sectionData.movies"
+            :all-movies-path="sectionData.path"
         />
-
-        <sidemoviesection
+        <!-- <sidemoviesection
             v-if="this.$store.state.user"
             title="Favorites"
             movies=""
             all-movies-path=""
-        />
+        /> -->
     </aside>
 </template>
 <script>
@@ -22,6 +22,7 @@ import searchbar from '@/components/SearchBar.vue'
 import sidemoviesection from '@/components/SideMovieSection.vue'
 export default{
     name: "rightsidebar",
+    props:['sideSectionsData'],
     components: { 
         searchbar,
         sidemoviesection

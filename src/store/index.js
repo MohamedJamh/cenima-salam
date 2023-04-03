@@ -6,10 +6,10 @@ export default createStore({
     state () {
         return {
             token : null,
-            user:'you',
-            popularMovies : [],
-            premierMovies : [],
-            upcomingMovies : []
+            user : null,
+            popularMovies : null,
+            premierMovies : null,
+            upcomingMovies : null
         }
     },
     mutations: {
@@ -31,7 +31,6 @@ export default createStore({
                   state.upcomingMovies = data[0]
                   break;
             }
-            console.log(state.popularMovies)
         }
     },
     actions: {
@@ -43,6 +42,33 @@ export default createStore({
             if(!state.token){
                 dispatch('logout')
             }
+        },
+        async checkAvailableData({state , dispatch}){
+            if(!state.popularMovies){
+                await dispatch('getPopularMovies')
+            }
+            if(!state.premierMovies){
+                await dispatch('getPremierMovies')
+            }
+            if(!state.upcomingMovies){
+                await dispatch('getUpcomingMovies')
+            }
+        },
+        async getPopularMovies({commit}){
+            const response = await axios.get('movie')
+            commit('storeMovies',[response.data.result,'popular'])
+            return response.data.result
+        },
+        async getPremierMovies({commit}){
+            const response = await axios.get('movie/premier')
+            commit('storeMovies',[response.data.result,'premier'])
+            return response.data.result
+
+        },
+        async getUpcomingMovies({commit}){
+            const response = await axios.get('movie/upcoming')
+            commit('storeMovies',[response.data.result,'upcoming'])
+            return response.data.result
         }
     },
     getters:{
