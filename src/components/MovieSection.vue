@@ -8,23 +8,24 @@
         class="tw-mt-4 tw-gap-x-5 tw-gap-y-5 tw-grid tw-grid-cols-2 sm:tw-grid-cols-4" 
         v-if="this.componentName == 'long'">
             <movieposter
-                v-for="n in this.nombrePoster"
-                :key="n"
-                img-path=""
-                title=""
-                rate=""
+                v-for="(movie, index) in movies"
+                v-show="index < this.nombrePoster"
+                :key="index"
+                :img-path="movie.images[0].url"
+                :title="movie.title"
+                :rate="movie.rate"
             />
         </div>
         <div 
         class="tw-mt-4 tw-gap-x-5 tw-gap-y-5 tw-grid tw-grid-cols-2 sm:tw-grid-cols-3"
         v-if="this.componentName == 'wide'">
             <widemovieposter
-                v-if="this.componentName == 'wide'"
-                v-for="n in this.nombrePoster"
-                :key="n"
-                img-path=""
-                title=""
-                rate=""
+                v-for="(movie, index) in movies"
+                v-show="index < this.nombrePoster"
+                :key="index"
+                :img-path="movie.images[1].url"
+                :title="movie.title"
+                :rate="movie.rate"
             />
         </div>
     </div>

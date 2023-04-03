@@ -18,7 +18,7 @@
                     component-name="long"
                     :nombre-poster="4"
                     section-title="Premier"
-                    movies=""
+                    :movies="premier"
                     all-movies-path="" />
                 </section>
 
@@ -29,7 +29,7 @@
                     component-name="wide"
                     :nombre-poster="3"
                     section-title="Upcoming"
-                    movies=""
+                    :movies="upcoming"
                     all-movies-path="" />
                 </section>
             </main>
@@ -47,8 +47,10 @@ import moviesection from '@/components/MovieSection.vue'
 import rightsidebar from '@/components/RightSideBar.vue'
 
 export default {
-    async beforeMount(){
+    async created(){
         await this.getPopularMovies()
+        await this.getPremierMovies()
+        await this.getUpcomingMovies()
     },
     data(){
         return {
@@ -69,10 +71,15 @@ export default {
             this.$store.commit('storeMovies',[response.data.result,'popular'])
         },
         async getPremierMovies(){
+            const response = await axios.get('movie/premier')
+            this.premier = await response.data.result
+            this.$store.commit('storeMovies',[response.data.result,'premier'])
 
         },
         async getUpcomingMovies(){
-
+            const response = await axios.get('movie/upcoming')
+            this.upcoming = await response.data.result
+            this.$store.commit('storeMovies',[response.data.result,'upcoming'])
         }
     }
 }

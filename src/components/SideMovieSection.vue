@@ -3,10 +3,14 @@
         <span class="tw-font-semibold tw-text-white">{{ this.title }}</span>
         <ul class="tw-mt-4 tw-text-gray-400 tw-text-xs tw-space-y-3">
             <li>
-                <minimovieposter 
-                    img-path=""
-                    title=""
-                    rate=""
+                <minimovieposter
+                    v-for="(movie,index) in movies"
+                    v-show="index < 3"
+                    :key="index"
+                    :title="movie.title"
+                    :img-path="movie.images[0].url"
+                    :genres="movie.genres"
+                    :rate="movie.rate"
                 />
             </li>
             <li class="tw-pt-1">

@@ -5,11 +5,12 @@
         />
         <sidemoviesection
             title="Popular"
-            movies=""
+            :movies="this.$store.getters.getPopular"
             all-movies-path=""
         />
 
         <sidemoviesection
+            v-if="this.$store.state.user"
             title="Favorites"
             movies=""
             all-movies-path=""
