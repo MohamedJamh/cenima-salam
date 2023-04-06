@@ -1,6 +1,6 @@
 <template>
     <div class="tw-flex tw-space-y-3 tw-space-x-3 tw-my-4">
-        <img :src="'https://image.tmdb.org/t/p/w154/'+ imgPath " class="tw-w-1/3 tw-rounded-md" alt="">
+        <img :src="imgPath" class="tw-w-1/3 tw-rounded-md" alt="">
         <div class="tw-flex tw-flex-col tw-justify-between">
             <div class="tw-flex tw-flex-col tw-space-y-1">
                 <span class="tw-text-white tw-font-semibold">{{ title }}</span>

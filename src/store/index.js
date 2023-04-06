@@ -55,18 +55,18 @@ export default createStore({
             }
         },
         async getPopularMovies({commit}){
-            const response = await axios.get('movie')
+            const response = await axios.get('home/popularMovie')
             commit('storeMovies',[response.data.result,'popular'])
             return response.data.result
         },
         async getPremierMovies({commit}){
-            const response = await axios.get('movie/premier')
+            const response = await axios.get('home/premierMovie')
             commit('storeMovies',[response.data.result,'premier'])
             return response.data.result
 
         },
         async getUpcomingMovies({commit}){
-            const response = await axios.get('movie/upcoming')
+            const response = await axios.get('home/upcomingMovie')
             commit('storeMovies',[response.data.result,'upcoming'])
             return response.data.result
         }

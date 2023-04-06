@@ -4,6 +4,7 @@
 
         />
         <sidemoviesection
+            v-show="sectionData.show"
             v-for="sectionData in sideSectionsData"
             :title="sectionData.title"
             :movies="sectionData.movies"

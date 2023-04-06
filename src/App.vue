@@ -1,6 +1,6 @@
 <template>
   <v-app >
-    <v-main class="tw-bg-zinc-900" >
+    <v-main class="tw-bg-zinc-900 tw-text-white" >
       <RouterView />
     </v-main>
   </v-app>

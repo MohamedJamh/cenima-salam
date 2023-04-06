@@ -1,15 +1,12 @@
 <template lang="">
     <section >
         <div class="tw-flex tw-min-h-screen xl:tw-max-w-screen-2xl xl:tw-mx-auto xl:tw-border-x-2 xl:tw-border-zinc-700"
+            v-if="this.$store.getters.getPremier"
             >
             <main class="tw-flex-1 tw-py-10 tw-px-5 sm:tw-px-10">
+                
+                <navbar />
                 <section>
-                    <router-link to="/Popular">tttt</router-link>
-                    <nav class="tw-flex tw-space-x-6 tw-text-white tw-font-medium">
-                        <a href="#" class="hover:tw-text-gray-700 dark:hover:tw-text-white">TV Series</a>
-                        <a href="#" class="tw-text-white tw-font-semibold">Movies</a>
-                        <a href="#" class="hover:tw-text-gray-700 dark:hover:tw-text-white">Animes</a>
-                    </nav>
                     <moviebanner
                     :movie="this.$store.getters.getPopular[0]"
                     />
@@ -36,16 +33,17 @@
                 
                 :side-sections-data="[
                     { 
-                        'title' : 'Premier' , 
-                        'movies' : this.$store.getters.getPremier,
-                        'path' : '/Premier',
+                        'title' : 'Popular' , 
+                        'movies' : this.$store.getters.getPopular,
+                        'path' : '/Popular',
                         'show' : true
                     },
                     { 
-                        'title' : 'Upcoming' , 
+                        'title' : 'Favorit' , 
                         'movies' : this.$store.getters.getUpcoming,
-                        'path' : '/Upcoming',
-                        'show' : true
+                        'path' : '/my-favorit',
+                        'show' : this.$store.getters.getUser,
+                        'message' : 'Login to add movies to the favorit list'
                     }
                 ]"
             />
@@ -53,6 +51,7 @@
     </section>
 </template>
 <script>
+import navbar from '@/components/Navbar.vue'
 import moviebanner from '@/components/MovieBanner.vue'
 import moviesection from '@/components/MovieSection.vue'
 import rightsidebar from '@/components/RightSideBar.vue'
@@ -67,6 +66,7 @@ export default {
         }
     },
     components:{
+        navbar,
         moviebanner,
         moviesection,
         rightsidebar
