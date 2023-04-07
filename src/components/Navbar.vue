@@ -16,7 +16,7 @@ export default {
     data(){
         return {
             links:[
-                { 'path': '/','name':'Home'},
+                { 'path': '/Home','name':'Home'},
                 { 'path': '/Popular','name':'Popular'},
                 { 'path': '/Premier','name':'Premier'},
                 { 'path': '/Upcoming','name':'Upcoming'},

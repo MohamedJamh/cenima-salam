@@ -1,6 +1,6 @@
 <template>
   <v-app >
-    <v-main class="" >
+    <v-main>
       <RouterView />
     </v-main>
   </v-app>

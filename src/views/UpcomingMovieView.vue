@@ -6,7 +6,7 @@
                 <navbar />
                 <h2 class="tw-text-white tw-text-4xl tw-font-semibold tw-my-4">Upcoming Movies</h2>
                 <moviebanner
-                v-for="movie in this.$store.getters.getUpcoming"
+                v-for="movie in upcoming"
                 :movie="movie"
                 />
             </main>
@@ -16,13 +16,13 @@
                     
                     { 
                         'title' : 'Premier' , 
-                        'movies' : this.$store.getters.getPremier,
+                        'movies' : premier,
                         'path' : '/Premier',
                         'show' : true
                     },
                     { 
                         'title' : 'Popular' , 
-                        'movies' : this.$store.getters.getPopular,
+                        'movies' : popular,
                         'path' : '/Popular',
                         'show' : true
                     },
@@ -36,12 +36,22 @@ import navbar from '@/components/Navbar.vue'
 import moviebanner from '@/components/MovieBanner.vue'
 import rightsidebar from '@/components/RightSideBar.vue'
 export default {
-    async beforeCreate() {
-        await this.$store.dispatch('checkAvailableData')
+    async created() {
+        this.popular = await this.$store.dispatch('getPopularMovies').then(data => {
+            return data
+        })
+        this.premier = await this.$store.dispatch('getPremierMovies').then(data => {
+            return data
+        })
+        this.upcoming = await this.$store.dispatch('getUpcomingMovies').then(data => {
+            return data
+        })
     },
     data(){
         return{
-            
+            popular : null,
+            premier : null,
+            upcoming : null,
         }
     },
     components:{
