@@ -6,6 +6,8 @@ import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
 import './axios'
 
+import './assets/style/app.css'
+
 loadFonts()
 
 createApp(App)

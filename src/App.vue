@@ -1,6 +1,6 @@
 <template>
   <v-app >
-    <v-main class="tw-bg-zinc-900 tw-text-white" >
+    <v-main class="" >
       <RouterView />
     </v-main>
   </v-app>
@@ -8,9 +8,10 @@
 
 <script>
 
+
 export default {
   name: 'App',
-
+  
   components: {
   },
 

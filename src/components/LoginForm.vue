@@ -1,39 +1,22 @@
 <template >
-    <h2 class="tw-text-3xl tw-my-5">Log in and book your ticket now !</h2>
-    <div class="tw-relative tw-block tw-rounded-lg tw-shadow-lg tw-px-6 tw-py-12 md:tw-px-12 lg:tw--mr-14" style="background: hsla(0, 0%, 100%, 0.55); backdrop-filter: blur(30px); z-index: 1">
-        <v-form @submit.prevent="handelLogin()" v-model="valid">
-            <v-container>
-                <v-row>
-                    <v-col
-                    cols="12"
-                    md="12"
-                    >
-                        <v-text-field
-                        v-model="email"
-                        :rules="emailRules"
-                        label="E-mail"
-                        required
-                        ></v-text-field>
-                    </v-col>
-                    <v-col
-                    cols="12"
-                    md="12"
-                    >
-                        <v-text-field
-                            v-model="password"
-                            :rules="passwordRules"
-                            label="Password"
-                            type="password"
-                            required
-                        ></v-text-field>
-                    </v-col>
-                </v-row>
-                <div>
-                    <router-link to="/Register">You don't have an account ?</router-link>
-                    <v-btn type="submit" :loading="log && valid" @click="log = !log" class="tw-float-right">login</v-btn>
-                </div>
-            </v-container>
-    </v-form>
+    <div class="tw-w-full tw-max-w-xl tw-p-6 tw-space-y-8 sm:tw-p-8 tw-bg-white tw-rounded-lg tw-shadow dark:tw-bg-gray-800">
+        <form class="tw-mt-2 tw-space-y-6" @submit.prevent="handelLogin()">
+            <div>
+                <label for="email" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 dark:tw-text-white">Your email</label>
+                <input v-model="email" type="email" name="email" id="email" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 sm:tw-text-sm tw-rounded-lg focus:tw-ring-primary-500 focus:tw-border-primary-500 tw-block tw-w-full tw-p-2.5 dark:tw-bg-gray-700 dark:tw-border-gray-600 dark:tw-placeholder-gray-400 dark:tw-text-white dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500" placeholder="name@company.com" required="">
+            </div>
+            <div>
+                <label for="password" class="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900 dark:tw-text-white">Your password</label>
+                <input v-model="password" type="password" name="password" id="password" placeholder="••••••••" class="tw-bg-gray-50 tw-border tw-border-gray-300 tw-text-gray-900 sm:tw-text-sm tw-rounded-lg focus:tw-ring-primary-500 focus:tw-border-primary-500 tw-block tw-w-full tw-p-2.5 dark:tw-bg-gray-700 dark:tw-border-gray-600 dark:tw-placeholder-gray-400 dark:tw-text-white dark:focus:tw-ring-primary-500 dark:focus:tw-border-primary-500" required="">
+            </div>
+            <div class="tw-flex tw-items-center tw-justify-between">
+                <button type="submit" class="tw-w-full tw-px-5 tw-py-3 tw-text-base tw-font-medium tw-text-center tw-text-white tw-bg-red-700 tw-rounded-lg hover:tw-bg-red-800 focus:tw-ring-4 focus:tw-ring-red-300 sm:tw-w-auto ">Login to cenima salam</button>
+                <a href="#" class="tw-ml-auto tw-text-sm tw-text-primary-700 hover:tw-underline dark:tw-text-primary-500">Lost Password?</a>
+            </div>
+            <div class="tw-text-sm tw-font-medium tw-text-gray-500 dark:tw-text-gray-400">
+                Not registered? <a @click="this.$emit('switch')" class="tw-text-primary-700 hover:tw-underline dark:tw-text-primary-500">Create account</a>
+            </div>
+        </form>
     </div>
 </template>
 <script>
@@ -66,17 +49,17 @@ export default {
     }),
     methods:{
         async handelLogin(){
-            if(this.valid){
-                const response = await axios.post('login',
-                {
-                    email : this.email,
-                    password : this.password,
-                })
-                if(response.data.status){
-                    localStorage.setItem('token',response.data.authorisation.token)
-                    this.$router.push('/')
-                }
-                this.log = false;
+            const {data} = await axios.post('login',
+            {
+                email : this.email,
+                password : this.password,
+            })
+            if(data.status){
+                console.log(data.authorisation.token)
+                // localStorage.setItem('token',data.authorisation.token)
+                // this.$router.push('/')
+            }else{
+                alert(data.message)
             }
         }
     }

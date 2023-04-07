@@ -2,18 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-input{
-    @apply focus:tw-outline-none tw-outline-none;
+.btn-primary{
+    @apply tw-bg-red-600 hover:tw-bg-red-700 tw-text-white tw-rounded-lg;
 }
-
-@layer utilities{
-    .toggle-checkbox:checked {
-        @apply right-0 border-red-600;
-        right: 0;
-        /* border-color: #68D391; */
-      }
-      .toggle-checkbox:checked + .toggle-label {
-        @apply bg-red-600;
-        /* background-color: #68D391; */
-      }
+.btn-secondary{
+  @apply tw-border tw-border-red-200 tw-text-red-600 tw-bg-white tw-rounded-lg
 }

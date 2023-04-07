@@ -1,5 +1,5 @@
 <template >
-    <section >
+    <section class="tw-bg-zinc-900 " >
         <div class="tw-flex tw-min-h-screen xl:tw-max-w-screen-2xl xl:tw-mx-auto xl:tw-border-x-2 xl:tw-border-zinc-700"
             >
             <main class="tw-flex-1 tw-py-10 tw-px-5 sm:tw-px-10">
