@@ -10,39 +10,104 @@
                     :scrim="false"
                     transition="dialog-bottom-transition"
                     >
-                    <template v-slot:activator="{ props }">
-                        <v-btn
-                        color="primary"
-                        v-bind="props"
-                        >
-                        Open Dialog
-                        </v-btn>
-                    </template>
-                    <v-card>
-                        <v-toolbar
-                        color="primary"
-                        >
-                        <v-btn
-                            icon
-                            @click="dialog = false"
-                        >
-                            <v-icon>mdi-close</v-icon>
-                        </v-btn>
-                        <v-toolbar-title>Settings</v-toolbar-title>
-                        <v-spacer></v-spacer>
-                        <v-toolbar-items>
+                        <template v-slot:activator="{ props }">
                             <v-btn
-                            variant="text"
-                            @click="dialog = false"
+                            color="primary"
+                            dark
+                            v-bind="props"
                             >
-                            Save
+                            New Movie
                             </v-btn>
-                        </v-toolbar-items>
-                        </v-toolbar>
-                        
-                        
-                        
-                    </v-card>
+                        </template>
+                        <v-card>
+                            <v-toolbar
+                            dark
+                            color="primary"
+                            >
+                                <v-btn
+                                    icon
+                                    dark
+                                    @click="dialog = false"
+                                >
+                                    <v-icon>mdi-close</v-icon>
+                                </v-btn>
+                                <v-toolbar-title></v-toolbar-title>
+                                <v-spacer></v-spacer>
+                                <v-toolbar-items>
+                                    <v-btn
+                                    variant="text"
+                                    @click="dialog = false"
+                                    >
+                                    Save
+                                    </v-btn>
+                                </v-toolbar-items>
+                            </v-toolbar>
+                            <div class="tw-container tw-mx-auto">
+                                <div class="tw-full tw-rounded-lg tw-bg-gray-200 tw-h-96 tw-my-4 ">
+                                    <img src="" alt="">
+                                </div>
+                                <section class="tw-flex tw-flex-col md:tw-flex-row tw-h-full">
+                                    <div class="tw-w-2/6 tw-h-full tw-rounded-lg tw-bg-gray-200">
+                                        <img src="" alt="">
+                                    </div>
+                                    <div class="tw-w-4/6">
+                                        <v-form v-model="valid">
+                                            <v-container>
+                                            <v-row>
+                                                <v-col
+                                                cols="12"
+                                                md="6"
+                                                >
+                                                <v-text-field
+                                                    v-model="firstname"
+                                                    :rules="nameRules"
+                                                    :counter="10"
+                                                    label="Title"
+                                                    required
+                                                ></v-text-field>
+                                                </v-col>
+
+                                                <v-col
+                                                cols="12"
+                                                md="6"
+                                                >
+                                                <v-text-field
+                                                    v-model="lastname"
+                                                    :rules="nameRules"
+                                                    :counter="10"
+                                                    label="Tagline"
+                                                    required
+                                                ></v-text-field>
+                                                </v-col>
+
+                                                <v-col cols="12" md="12">
+                                                    <v-textarea 
+                                                        v-model="email"
+                                                        :rules="emailRules"
+                                                        label="Overview"
+                                                        required
+                                                    ></v-textarea>
+                                                </v-col>
+                                                
+                                                <v-col cols="12" md="4" >
+                                                    <v-combobox
+                                                        label="Status"
+                                                        :items="movieStatus"
+                                                    ></v-combobox>
+                                                </v-col>
+                                                <v-col cols="12" md="4" >
+                                                    <v-combobox
+                                                        label="Status"
+                                                        :items="movieStatus"
+                                                    ></v-combobox>
+                                                </v-col>
+                                            </v-row>
+                                            </v-container>
+                                        </v-form>
+                                    </div>
+                                </section>
+                            </div>
+                        </v-card>
                     </v-dialog>
                 </v-row>
             </v-template>
@@ -122,7 +187,7 @@ export default {
     },
     data(){
         return {
-            formDialog : false,
+            dialog : false,
             headers:[
                 'Poster',
                 'Title',
@@ -131,7 +196,8 @@ export default {
                 'Language',
                 'Runtime',
             ],
-            movies : null
+            movies : null,
+            movieStatus : ['premier','popular','upcoming']
         }
     },
     methods:{
@@ -142,6 +208,8 @@ export default {
     
   }
 </script>
-<style >
-    
+<style scoped >
+    .dialog-bottom-transition-enter-active, .dialog-bottom-transition-leave-active {
+        transition: transform .2s ease-in-out;
+    }
 </style>
