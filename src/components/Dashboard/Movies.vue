@@ -2,7 +2,7 @@
     <div class="tw-pt-4 tw-pl-2" >
         <div class="tw-flex tw-justify-between">
             <h2 class=" tw-text-3xl tw-font-semibold" >All Movies</h2>
-            <v-template>
+            <section>
                 <v-row justify="center">
                     <v-dialog
                     v-model="dialog"
@@ -43,9 +43,13 @@
                                 </v-toolbar-items>
                             </v-toolbar>
                             <div class="tw-container tw-mx-auto">
-                                <div class="tw-full tw-rounded-lg tw-bg-gray-200 tw-h-96 tw-my-4 ">
-                                    <img src="" alt="">
+                                <!-- banner image -->
+                                <div 
+                                :style="{backgroundImage: 'url('+ formRecord.images[1].url +')'}"
+                                class="xl:tw-w-4/6 tw-mx-auto tw-rounded-lg tw-bg-gray-200 tw-h-96 tw-my-4 tw-bg-cover">
+                                    <!--  -->
                                 </div>
+                                <!--  -->
                                 <section class="tw-flex tw-flex-col md:tw-flex-row tw-h-full">
                                     <div class="tw-w-2/6 tw-h-full tw-rounded-lg tw-bg-gray-200">
                                         <img src="" alt="">
@@ -54,14 +58,60 @@
                                         <v-form v-model="valid">
                                             <v-container>
                                             <v-row>
+                                                <v-col cols="12" md="12">
+                                                    <v-card class="elevation-0" >
+                                                        <v-tabs
+                                                        v-model="tab"
+                                                        fixed-tabs
+                                                        bg-color="secondary"
+                                                        >
+                                                        <v-tab value="local">Local</v-tab>
+                                                        <v-tab value="image">Online</v-tab>
+                                                        </v-tabs>
+
+                                                        <v-card-text>
+                                                            <v-window v-model="tab">
+                                                                <v-window-item value="local">
+                                                                    <v-row>
+                                                                        <v-col cols="12" md="6">
+                                                                            <v-file-input
+                                                                            accept="image/*"
+                                                                            label="BackDrop image"
+                                                                            variant="underlined"></v-file-input>
+                                                                        </v-col>
+                                                                        <v-col cols="12" md="6">
+                                                                            <v-file-input
+                                                                            accept="image/*"
+                                                                            label="Poster image"
+                                                                            variant="underlined"></v-file-input>
+                                                                        </v-col>
+                                                                    </v-row>
+                                                                </v-window-item>
+
+                                                                <v-window-item value="image">
+                                                                    <v-row>
+                                                                        <v-col cols="12" md="6">
+                                                                            <v-text-field
+                                                                            v-model="formRecord.images[1].url"
+                                                                            label="BackDrop url"></v-text-field>
+                                                                        </v-col>
+                                                                        <v-col cols="12" md="6">
+                                                                            <v-text-field
+                                                                            v-model="formRecord.images[0].url"
+                                                                            label="Poster url"></v-text-field>
+                                                                        </v-col>
+                                                                    </v-row>
+                                                                </v-window-item>
+                                                            </v-window>
+                                                        </v-card-text>
+                                                    </v-card>
+                                                </v-col>
                                                 <v-col
                                                 cols="12"
                                                 md="6"
                                                 >
                                                 <v-text-field
-                                                    v-model="firstname"
-                                                    :rules="nameRules"
-                                                    :counter="10"
+                                                    v-model="formRecord.title"
                                                     label="Title"
                                                     required
                                                 ></v-text-field>
@@ -72,9 +122,7 @@
                                                 md="6"
                                                 >
                                                 <v-text-field
-                                                    v-model="lastname"
-                                                    :rules="nameRules"
-                                                    :counter="10"
+                                                    v-model="formRecord.tagline"
                                                     label="Tagline"
                                                     required
                                                 ></v-text-field>
@@ -82,25 +130,80 @@
 
                                                 <v-col cols="12" md="12">
                                                     <v-textarea 
-                                                        v-model="email"
-                                                        :rules="emailRules"
+                                                        v-model="formRecord.overview"
                                                         label="Overview"
                                                         required
                                                     ></v-textarea>
                                                 </v-col>
                                                 
                                                 <v-col cols="12" md="4" >
-                                                    <v-combobox
-                                                        label="Status"
+                                                    <v-select
+                                                        v-model="formRecord.status"
                                                         :items="movieStatus"
-                                                    ></v-combobox>
+                                                        item-title="title"
+                                                        item-value="value"
+                                                        label="Status"
+                                                        :return-object="false"
+                                                        single-line
+                                                    ></v-select>
                                                 </v-col>
                                                 <v-col cols="12" md="4" >
-                                                    <v-combobox
-                                                        label="Status"
-                                                        :items="movieStatus"
-                                                    ></v-combobox>
+                                                    <v-select
+                                                        v-model="formRecord.genres"
+                                                        :items="movieGenres"
+                                                        item-title="name"
+                                                        item-value="id"
+                                                        label="Genres"
+                                                        :return-object="false"
+                                                        multiple
+                                                    ></v-select>
                                                 </v-col>
+                                                <v-col cols="12" md="4" >
+                                                    <v-select
+                                                        v-model="formRecord.companies"
+                                                        :items="movieProductionCompanies"
+                                                        item-title="name"
+                                                        item-value="id"
+                                                        label="Production Companies"
+                                                        :return-object="false"
+                                                        single-line
+                                                        multiple
+                                                    ></v-select>
+                                                </v-col>
+                                                <v-col cols="12" md="4" >
+                                                    <v-text-field
+                                                    v-model="formRecord.runtime"
+                                                    type="number"
+                                                    label="Runtime (min)"></v-text-field>
+                                                </v-col>
+                                                <v-col cols="12" md="4" >
+                                                    <v-text-field
+                                                    v-model="formRecord.language"
+                                                    label="Language"></v-text-field>
+                                                </v-col>
+                                                <v-col cols="12" md="4" >
+                                                    <v-text-field
+                                                    v-model="formRecord.rate"
+                                                    type="number"
+                                                    :step="0.1"
+                                                    :min="0"
+                                                    :max="10"
+                                                    label="Rate"></v-text-field>
+                                                </v-col>
+                                                <v-col cols="12" md="6" >
+                                                    <datepicker
+                                                    class="tw-bg-gray-100 tw-w-full tw-px-5 tw-py-4 tw-rounded-sm focus:tw-outline-none tw-border tw-border-gray-400"
+                                                    :disabled-date="true"
+                                                    v-model="formRecord.release_date" />
+                                                </v-col>
+                                                <v-col cols="12" md="6" >
+                                                    <v-text-field
+                                                    v-model="formRecord.budget"
+                                                    type="number"
+                                                    :min="0"
+                                                    label="Budget"></v-text-field>
+                                                </v-col>
+                                                {{ formRecord }}
                                             </v-row>
                                             </v-container>
                                         </v-form>
@@ -110,7 +213,7 @@
                         </v-card>
                     </v-dialog>
                 </v-row>
-            </v-template>
+            </section>
         </div>
         <div class="tw-relative tw-overflow-x-auto tw-shadow-md sm:tw-rounded-lg tw-my-10">
             <table class="tw-w-full tw-text-sm tw-text-left tw-text-gray-500 ">
@@ -157,7 +260,7 @@
                             {{ movie.runtime }}
                         </td>
                         <td class="tw-px-2 tw-py-4 tw-cursor-pointer">
-                            <div @click="alertt('update')">
+                            <div @click="">
                                 <v-icon
                                 color="primary"
                                 icon="mdi-movie-edit"
@@ -165,7 +268,7 @@
                             </div>
                         </td>
                         <td class="tw-px-2 tw-py-4 tw-cursor-pointer">
-                            <div @click="alertt('delete')">
+                            <div @click="">
                                 <v-icon
                                 color="primary"
                                 icon="mdi-delete-empty"
@@ -179,15 +282,26 @@
     </div>
 </template>
 <script>
+import Datepicker from 'vue3-datepicker'
 export default {
+    components:{
+        Datepicker
+    },
     async created(){
         this.movies = await this.$store.dispatch('getAllMovies').then(data => {
+            return data
+        })
+        this.movieGenres = await this.$store.dispatch('getGenres').then(data =>{
+            return data
+        })
+        this.movieProductionCompanies = await this.$store.dispatch('getCompanies').then(data =>{
             return data
         })
     },
     data(){
         return {
             dialog : false,
+            tab : null,
             headers:[
                 'Poster',
                 'Title',
@@ -197,19 +311,53 @@ export default {
                 'Runtime',
             ],
             movies : null,
-            movieStatus : ['premier','popular','upcoming']
+            movieGenres : null,
+            movieProductionCompanies : null,
+            movieStatus : [
+                {title:'Popular',value:'popular'},
+                {title:'Premier',value:'premier'},
+                {title:'Upcoming',value:'upcoming'}
+            ],
+            formRecord:{
+                title : '',
+                tagline : '',
+                overview : '',
+                release_date : new Date(),
+                language : '',
+                runtime : 0,
+                rate : 0,
+                budget : 0,
+                status : 'popular',
+                genres : [],
+                companies : [],
+                images : [
+                    {
+                        type : 'poster',
+                        url : null
+                    },
+                    {
+                        type : 'backdrop',
+                        url : null
+                    },
+                ]
+
+            }
         }
     },
     methods:{
-        alertt(t){
-            alert(t)
-        }
+        
     }
-    
   }
 </script>
 <style scoped >
     .dialog-bottom-transition-enter-active, .dialog-bottom-transition-leave-active {
         transition: transform .2s ease-in-out;
     }
+
+    
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
 </style>

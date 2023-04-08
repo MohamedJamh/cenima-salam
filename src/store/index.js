@@ -19,6 +19,7 @@ export default createStore({
         
     },
     actions: {
+        //user
         logout({ commit }){
             commit('destroyToken')
             router.push('/Login')
@@ -28,7 +29,7 @@ export default createStore({
                 dispatch('logout')
             }
         },
-        
+        // movies
         async getPopularMovies(){
             const response = await axios.get('home/popularMovie')
             return response.data.result
@@ -46,7 +47,22 @@ export default createStore({
             if(data.status){
                 return data.result
             }
+        },
+        //genres
+        async getGenres(){
+            const {data} = await axios.get('genres')
+            if(data.status){
+                return data.result
+            }
+        },
+        //companies
+        async getCompanies(){
+            const {data} = await axios.get('production-companies')
+            if(data.status){
+                return data.result
+            }
         }
+        //
     },
     getters:{
         getUser(state){
