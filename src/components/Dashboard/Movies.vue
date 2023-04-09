@@ -267,7 +267,7 @@
                             <div @click="">
                                 <v-icon
                                 color="primary"
-                                icon="mdi-movie-edit"
+                                icon="mdi-movie-edit-outline"
                                 size="large"></v-icon>
                             </div>
                         </td>
@@ -275,7 +275,7 @@
                             <div @click="">
                                 <v-icon
                                 color="primary"
-                                icon="mdi-delete-empty"
+                                icon="mdi-delete-empty-outline"
                                 size="large"></v-icon>
                             </div>
                         </td>

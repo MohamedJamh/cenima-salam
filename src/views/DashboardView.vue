@@ -32,11 +32,13 @@
 <script>
 import movies from '@/components/Dashboard/Movies.vue'
 import genres from '@/components/Dashboard/Genres.vue'
+import beverageTypes from '@/components/Dashboard/BeverageTypes.vue'
 
 export default {
     components:{
         movies,
-        genres
+        genres,
+        beverageTypes
     },
     data () {
         return {
@@ -49,7 +51,7 @@ export default {
                 { name : 'Schema' , icon : 'view-carousel' },
                 { name : 'Genres' , icon : 'lock-pattern', component: 'genres' },
                 { name : 'Beverages' , icon : 'food' },
-                { name : 'Beverage Types' , icon : 'cookie-edit' },
+                { name : 'Beverage Types' , icon : 'cookie-edit', component: 'beverageTypes'  },
                 { name : 'Settings' , icon : 'cog' },
                 { name : 'Logout' , icon : 'logout' },
             ]

@@ -5,21 +5,35 @@ import axios from 'axios'
 export default createStore({
     state () {
         return {
+            //auth
             token : null,
             user : null,
+            //notification
+            showNotification : false,
+            notificationMessage: {
+                type : '',
+                messages : ''
+            }
         }
     },
     mutations: {
+        //auth
         storeToken(state, JwtToken){
             state.token = JwtToken
         },
         destroyToken(state){
             state.token = null
         },
+        //notification
+        trrigerNotification(state,paylod){
+            state.notificationMessage.type = paylod.type
+            state.notificationMessage.messages = paylod.messages
+            state.showNotification = true
+        }
         
     },
     actions: {
-        //user
+        //auth
         logout({ commit }){
             commit('destroyToken')
             router.push('/Login')
@@ -50,6 +64,8 @@ export default createStore({
         },
         //genres
         async getGenres(){
+            const token = localStorage.getItem('token');
+
             const {data} = await axios.get('genres')
             if(data.status){
                 return data.result
@@ -61,10 +77,14 @@ export default createStore({
             if(data.status){
                 return data.result
             }
+        },
+        //notification
+        notify({commit},notifcationPaylod){
+            commit('trrigerNotification',notifcationPaylod)
         }
-        //
     },
     getters:{
+        //auth
         getUser(state){
             return state.user
         },

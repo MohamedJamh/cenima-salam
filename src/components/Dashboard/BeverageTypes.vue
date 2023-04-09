@@ -1,7 +1,7 @@
 <template>
     <div class="tw-pt-4 tw-pl-2">
         <section class="tw-flex tw-items-center tw-justify-between">
-            <h2 class=" tw-text-3xl tw-font-semibold" >All Genres</h2>
+            <h2 class=" tw-text-3xl tw-font-semibold" >All Beverage Types</h2>
             <div>
                 <v-row justify="center">
                     <v-dialog
@@ -14,12 +14,12 @@
                         color="primary"
                         v-bind="props"
                         >
-                        Add Genre
+                        Add Type
                         </v-btn>
                     </template>
                     <v-card>
                         <v-card-title>
-                            <span class="text-h5">Genre</span>
+                            <span class="text-h5">Type</span>
                         </v-card-title>
                         <v-card-text>
                         <v-container>
