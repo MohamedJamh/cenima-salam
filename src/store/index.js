@@ -78,6 +78,13 @@ export default createStore({
                 return data.result
             }
         },
+        //Beverage Types
+        async getBeverageTypes(){
+            const {data} = await axios.get('beverage-types')
+            if(data.status){
+                return data.result
+            }
+        },
         //notification
         notify({commit},notifcationPaylod){
             commit('trrigerNotification',notifcationPaylod)

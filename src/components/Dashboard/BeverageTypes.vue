@@ -49,7 +49,7 @@
                             v-if="dialogAction == 'update'"
                             class="btn-secondary"
                             variant="text"
-                            @click="updateGenre()"
+                            @click="updateType()"
                         >
                             Update
                         </v-btn>
@@ -57,7 +57,7 @@
                             v-else
                             class="btn-secondary"
                             variant="text"
-                            @click="addGenre()"
+                            @click="addType()"
                         >
                             Add
                         </v-btn>
@@ -87,21 +87,21 @@
                 </thead>
                 <tbody>
                     <tr
-                      v-for="genre in genres"
+                      v-for="type in beverageTypes"
                       class="tw-bg-white tw-border-b ">
                         <th scope="row" class="tw-px-6 tw-py-4 tw-whitespace-nowrap ">
-                            {{ genre.name }}
+                            {{ type.name }}
                         </th>
                         <td class="tw-px-2 tw-py-4 tw-cursor-pointer">
-                            <div @click="prepareToEdit(genre)">
+                            <div @click="prepareToEdit(type)">
                                 <v-icon
                                 color="primary"
-                                icon="mdi-pencil-outline"
+                                icon="mdi-cookie-edit-outline"
                                 size="large"></v-icon>
                             </div>
                         </td>
                         <td class="tw-px-2 tw-py-4 tw-cursor-pointer">
-                            <div @click="deleteGenre(genre.id)">
+                            <div @click="deleteType(type.id)">
                                 <v-icon
                                 color="primary"
                                 icon="mdi-delete-empty-outline"
@@ -124,7 +124,7 @@ export default {
         return {
             dialog : false,
             dialogAction : 'add',
-            genres : null,
+            beverageTypes : null,
             headers:[
                 'Name',
             ],
@@ -136,19 +136,19 @@ export default {
     },
     methods:{
         async initialise(){
-            this.genres = await this.$store.dispatch('getGenres')
+            this.beverageTypes = await this.$store.dispatch('getBeverageTypes')
             .then(data =>{
                 return data
             })
         },
-        prepareToEdit(genre){
-            this.formRecord.name = genre.name
-            this.formRecord.id = genre.id
+        prepareToEdit(type){
+            this.formRecord.name = type.name
+            this.formRecord.id = type.id
             this.dialogAction = 'update'
             this.dialog = true
         },
-        async updateGenre(){
-            const { data } = await axios.patch(`genres/${this.formRecord.id}`,{
+        async updateType(){
+            const { data } = await axios.patch(`beverage-types/${this.formRecord.id}`,{
                 name : this.formRecord.name
             })
             let type = null
@@ -164,9 +164,9 @@ export default {
             })
             this.dialog = false
         },
-        async deleteGenre(id){
+        async deleteType(id){
             this.formRecord.id = id
-            const { data } = await axios.delete(`genres/${this.formRecord.id}`)
+            const { data } = await axios.delete(`beverage-types/${this.formRecord.id}`)
 
             let type = null
             if(data.status){
@@ -180,8 +180,8 @@ export default {
                 messages : [data.message]
             })
         },
-        async addGenre(){
-            const { data } = await axios.post(`genres`,{
+        async addType(){
+            const { data } = await axios.post(`beverage-types`,{
                 name : this.formRecord.name
             })
 

@@ -51,7 +51,7 @@ export default {
                 { name : 'Schema' , icon : 'view-carousel' },
                 { name : 'Genres' , icon : 'lock-pattern', component: 'genres' },
                 { name : 'Beverages' , icon : 'food' },
-                { name : 'Beverage Types' , icon : 'cookie-edit', component: 'beverageTypes'  },
+                { name : 'Beverage Types' , icon : 'cookie', component: 'beverageTypes'  },
                 { name : 'Settings' , icon : 'cog' },
                 { name : 'Logout' , icon : 'logout' },
             ]
