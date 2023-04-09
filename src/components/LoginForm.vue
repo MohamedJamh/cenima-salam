@@ -54,10 +54,12 @@ export default {
                 email : this.email,
                 password : this.password,
             })
+            console.log(data)
             if(data.status){
                 console.log(data.authorisation.token)
-                // localStorage.setItem('token',data.authorisation.token)
-                // this.$router.push('/')
+                // this.$store.state.token = data.authorisation.token
+                localStorage.setItem('token',data.authorisation.token)
+                this.$router.push('/dashboard')
             }else{
                 alert(data.message)
             }

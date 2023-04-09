@@ -31,21 +31,23 @@
 </template>
 <script>
 import movies from '@/components/Dashboard/Movies.vue'
+import genres from '@/components/Dashboard/Genres.vue'
 
 export default {
     components:{
-        movies
+        movies,
+        genres
     },
     data () {
         return {
             currentNav : 0,
             menuNav : [
                 { name : 'Movies' , 'icon' : 'filmstrip' , component : 'movies' },
-                { name : 'ShowTimes' , icon : 'video-vintage' },
+                { name : 'ShowTimes' , icon : 'video-vintage'  },
                 { name : 'Tickets' , icon : 'ticket-account' },
                 { name : 'Theater' , icon : 'theater' },
                 { name : 'Schema' , icon : 'view-carousel' },
-                { name : 'Genres' , icon : 'lock-pattern' },
+                { name : 'Genres' , icon : 'lock-pattern', component: 'genres' },
                 { name : 'Beverages' , icon : 'food' },
                 { name : 'Beverage Types' , icon : 'cookie-edit' },
                 { name : 'Settings' , icon : 'cog' },

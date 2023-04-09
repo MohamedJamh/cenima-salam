@@ -42,174 +42,178 @@
                                     </v-btn>
                                 </v-toolbar-items>
                             </v-toolbar>
-                            <div class="tw-container tw-mx-auto">
+                            <div class="tw-container tw-mx-auto tw-flex tw-flex-col md:tw-flex-row-reverse  tw-gap-2">
                                 <!-- banner image -->
                                 <div 
                                 :style="{backgroundImage: 'url('+ formRecord.images[1].url +')'}"
-                                class="xl:tw-w-4/6 tw-mx-auto tw-rounded-lg tw-bg-gray-200 tw-h-96 tw-my-4 tw-bg-cover">
-                                    <!--  -->
+                                class=" tw-w-full xl:tw-w-4/6 tw-mx-auto tw-rounded-lg tw-bg-gray-200 tw-h-96 tw-my-4 tw-bg-cover">
                                 </div>
-                                <!--  -->
-                                <section class="tw-flex tw-flex-col md:tw-flex-row tw-h-full">
-                                    <div class="tw-w-2/6 tw-h-full tw-rounded-lg tw-bg-gray-200">
-                                        <img src="" alt="">
-                                    </div>
-                                    <div class="tw-w-4/6">
-                                        <v-form v-model="valid">
-                                            <v-container>
-                                            <v-row>
-                                                <v-col cols="12" md="12">
-                                                    <v-card class="elevation-0" >
-                                                        <v-tabs
-                                                        v-model="tab"
-                                                        fixed-tabs
-                                                        bg-color="secondary"
-                                                        >
-                                                        <v-tab value="local">Local</v-tab>
-                                                        <v-tab value="image">Online</v-tab>
-                                                        </v-tabs>
-
-                                                        <v-card-text>
-                                                            <v-window v-model="tab">
-                                                                <v-window-item value="local">
-                                                                    <v-row>
-                                                                        <v-col cols="12" md="6">
-                                                                            <v-file-input
-                                                                            accept="image/*"
-                                                                            label="BackDrop image"
-                                                                            variant="underlined"></v-file-input>
-                                                                        </v-col>
-                                                                        <v-col cols="12" md="6">
-                                                                            <v-file-input
-                                                                            accept="image/*"
-                                                                            label="Poster image"
-                                                                            variant="underlined"></v-file-input>
-                                                                        </v-col>
-                                                                    </v-row>
-                                                                </v-window-item>
-
-                                                                <v-window-item value="image">
-                                                                    <v-row>
-                                                                        <v-col cols="12" md="6">
-                                                                            <v-text-field
-                                                                            v-model="formRecord.images[1].url"
-                                                                            label="BackDrop url"></v-text-field>
-                                                                        </v-col>
-                                                                        <v-col cols="12" md="6">
-                                                                            <v-text-field
-                                                                            v-model="formRecord.images[0].url"
-                                                                            label="Poster url"></v-text-field>
-                                                                        </v-col>
-                                                                    </v-row>
-                                                                </v-window-item>
-                                                            </v-window>
-                                                        </v-card-text>
-                                                    </v-card>
-                                                </v-col>
-                                                <v-col
-                                                cols="12"
-                                                md="6"
-                                                >
-                                                <v-text-field
-                                                    v-model="formRecord.title"
-                                                    label="Title"
-                                                    required
-                                                ></v-text-field>
-                                                </v-col>
-
-                                                <v-col
-                                                cols="12"
-                                                md="6"
-                                                >
-                                                <v-text-field
-                                                    v-model="formRecord.tagline"
-                                                    label="Tagline"
-                                                    required
-                                                ></v-text-field>
-                                                </v-col>
-
-                                                <v-col cols="12" md="12">
-                                                    <v-textarea 
-                                                        v-model="formRecord.overview"
-                                                        label="Overview"
-                                                        required
-                                                    ></v-textarea>
-                                                </v-col>
-                                                
-                                                <v-col cols="12" md="4" >
-                                                    <v-select
-                                                        v-model="formRecord.status"
-                                                        :items="movieStatus"
-                                                        item-title="title"
-                                                        item-value="value"
-                                                        label="Status"
-                                                        :return-object="false"
-                                                        single-line
-                                                    ></v-select>
-                                                </v-col>
-                                                <v-col cols="12" md="4" >
-                                                    <v-select
-                                                        v-model="formRecord.genres"
-                                                        :items="movieGenres"
-                                                        item-title="name"
-                                                        item-value="id"
-                                                        label="Genres"
-                                                        :return-object="false"
-                                                        multiple
-                                                    ></v-select>
-                                                </v-col>
-                                                <v-col cols="12" md="4" >
-                                                    <v-select
-                                                        v-model="formRecord.companies"
-                                                        :items="movieProductionCompanies"
-                                                        item-title="name"
-                                                        item-value="id"
-                                                        label="Production Companies"
-                                                        :return-object="false"
-                                                        single-line
-                                                        multiple
-                                                    ></v-select>
-                                                </v-col>
-                                                <v-col cols="12" md="4" >
-                                                    <v-text-field
-                                                    v-model="formRecord.runtime"
-                                                    type="number"
-                                                    label="Runtime (min)"></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12" md="4" >
-                                                    <v-text-field
-                                                    v-model="formRecord.language"
-                                                    label="Language"></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12" md="4" >
-                                                    <v-text-field
-                                                    v-model="formRecord.rate"
-                                                    type="number"
-                                                    :step="0.1"
-                                                    :min="0"
-                                                    :max="10"
-                                                    label="Rate"></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12" md="6" >
-                                                    <datepicker
-                                                    class="tw-bg-gray-100 tw-w-full tw-px-5 tw-py-4 tw-rounded-sm focus:tw-outline-none tw-border tw-border-gray-400"
-                                                    :disabled-date="true"
-                                                    v-model="formRecord.release_date" />
-                                                </v-col>
-                                                <v-col cols="12" md="6" >
-                                                    <v-text-field
-                                                    v-model="formRecord.budget"
-                                                    type="number"
-                                                    :min="0"
-                                                    label="Budget"></v-text-field>
-                                                </v-col>
-                                                {{ formRecord }}
-                                            </v-row>
-                                            </v-container>
-                                        </v-form>
-                                    </div>
-                                </section>
+                            
+                                <div
+                                :style="{backgroundImage: 'url('+ poster +')'}"
+                                class="tw-h-96 tw-w-72 tw-mx-auto tw-rounded-lg tw-bg-gray-200 tw-my-4 tw-bg-cover">
+                                </div>
                             </div>
+                            <section class="tw-container tw-mx-auto">
+                                <div>
+                                    <v-form >
+                                        <v-container>
+                                        <v-row>
+                                            <v-col cols="12" md="12">
+                                                <v-card class="elevation-0" >
+                                                    <v-tabs
+                                                    v-model="tab"
+                                                    fixed-tabs
+                                                    bg-color="secondary"
+                                                    >
+                                                    <v-tab value="local">Local</v-tab>
+                                                    <v-tab value="image">Online</v-tab>
+                                                    </v-tabs>
+
+                                                    <v-card-text>
+                                                        <v-window v-model="tab">
+                                                            <v-window-item value="local">
+                                                                <v-row>
+                                                                    <v-col cols="12" md="6">
+                                                                        <v-file-input
+                                                                        accept="image/*"
+                                                                        label="BackDrop image"
+                                                                        variant="underlined"></v-file-input>
+                                                                    </v-col>
+                                                                    <v-col cols="12" md="6">
+                                                                        <input type="file"
+                                                                        ref="fileInput"
+                                                                        @click="pickFile">
+                                                                        <v-file-input
+                                                                        @change="pickFile"
+                                                                        accept="image/png, image/jpeg, image/bmp"
+                                                                        label="Poster image"
+                                                                        variant="underlined"></v-file-input>
+                                                                    </v-col>
+                                                                </v-row>
+                                                            </v-window-item>
+
+                                                            <v-window-item value="image">
+                                                                <v-row>
+                                                                    <v-col cols="12" md="6">
+                                                                        <v-text-field
+                                                                        v-model="formRecord.images[1].url"
+                                                                        label="BackDrop url"></v-text-field>
+                                                                    </v-col>
+                                                                    <v-col cols="12" md="6">
+                                                                        <v-text-field
+                                                                        v-model="formRecord.images[0].url"
+                                                                        label="Poster url"></v-text-field>
+                                                                    </v-col>
+                                                                </v-row>
+                                                            </v-window-item>
+                                                        </v-window>
+                                                    </v-card-text>
+                                                </v-card>
+                                            </v-col>
+                                            <v-col
+                                            cols="12"
+                                            md="6"
+                                            >
+                                            <v-text-field
+                                                v-model="formRecord.title"
+                                                label="Title"
+                                                required
+                                            ></v-text-field>
+                                            </v-col>
+
+                                            <v-col
+                                            cols="12"
+                                            md="6"
+                                            >
+                                            <v-text-field
+                                                v-model="formRecord.tagline"
+                                                label="Tagline"
+                                                required
+                                            ></v-text-field>
+                                            </v-col>
+
+                                            <v-col cols="12" md="12">
+                                                <v-textarea 
+                                                    v-model="formRecord.overview"
+                                                    label="Overview"
+                                                    required
+                                                ></v-textarea>
+                                            </v-col>
+                                            
+                                            <v-col cols="12" md="4" >
+                                                <v-select
+                                                    v-model="formRecord.status"
+                                                    :items="movieStatus"
+                                                    item-title="title"
+                                                    item-value="value"
+                                                    label="Status"
+                                                    :return-object="false"
+                                                    single-line
+                                                ></v-select>
+                                            </v-col>
+                                            <v-col cols="12" md="4" >
+                                                <v-select
+                                                    v-model="formRecord.genres"
+                                                    :items="movieGenres"
+                                                    item-title="name"
+                                                    item-value="id"
+                                                    label="Genres"
+                                                    :return-object="false"
+                                                    multiple
+                                                ></v-select>
+                                            </v-col>
+                                            <v-col cols="12" md="4" >
+                                                <v-select
+                                                    v-model="formRecord.companies"
+                                                    :items="movieProductionCompanies"
+                                                    item-title="name"
+                                                    item-value="id"
+                                                    label="Production Companies"
+                                                    :return-object="false"
+                                                    single-line
+                                                    multiple
+                                                ></v-select>
+                                            </v-col>
+                                            <v-col cols="12" md="4" >
+                                                <v-text-field
+                                                v-model="formRecord.runtime"
+                                                type="number"
+                                                label="Runtime (min)"></v-text-field>
+                                            </v-col>
+                                            <v-col cols="12" md="4" >
+                                                <v-text-field
+                                                v-model="formRecord.language"
+                                                label="Language"></v-text-field>
+                                            </v-col>
+                                            <v-col cols="12" md="4" >
+                                                <v-text-field
+                                                v-model="formRecord.rate"
+                                                type="number"
+                                                :step="0.1"
+                                                :min="0"
+                                                :max="10"
+                                                label="Rate"></v-text-field>
+                                            </v-col>
+                                            <v-col cols="12" md="6" >
+                                                <datepicker
+                                                class="tw-bg-gray-100 tw-w-full tw-px-5 tw-py-4 tw-rounded-sm focus:tw-outline-none tw-border tw-border-gray-400"
+                                                :disabled-date="true"
+                                                v-model="formRecord.release_date" />
+                                            </v-col>
+                                            <v-col cols="12" md="6" >
+                                                <v-text-field
+                                                v-model="formRecord.budget"
+                                                type="number"
+                                                :min="0"
+                                                label="Budget"></v-text-field>
+                                            </v-col>
+                                            {{ formRecord }}
+                                        </v-row>
+                                        </v-container>
+                                    </v-form>
+                                </div>
+                            </section>
                         </v-card>
                     </v-dialog>
                 </v-row>
@@ -302,6 +306,7 @@ export default {
         return {
             dialog : false,
             tab : null,
+            poster : null,
             headers:[
                 'Poster',
                 'Title',
@@ -318,6 +323,7 @@ export default {
                 {title:'Premier',value:'premier'},
                 {title:'Upcoming',value:'upcoming'}
             ],
+            
             formRecord:{
                 title : '',
                 tagline : '',
@@ -328,8 +334,8 @@ export default {
                 rate : 0,
                 budget : 0,
                 status : 'popular',
-                genres : [],
-                companies : [],
+                genres : [1],
+                companies : [1],
                 images : [
                     {
                         type : 'poster',
@@ -345,7 +351,18 @@ export default {
         }
     },
     methods:{
-        
+        pickFile () {
+            let input = this.$refs.fileInput
+            let file = input.files
+            if (file && file[0]) {
+            let reader = new FileReader
+            reader.onload = e => {
+                this.poster = e.target.result
+            }
+            reader.readAsDataURL(file[0])
+            }
+        }
+
     }
   }
 </script>
