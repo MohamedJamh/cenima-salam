@@ -31,13 +31,19 @@
 </template>
 <script>
 import movies from '@/components/Dashboard/Movies.vue'
+import schemas from '@/components/Dashboard/Schemas.vue'
 import genres from '@/components/Dashboard/Genres.vue'
+import beverage from '@/components/Dashboard/Beverage.vue'
 import beverageTypes from '@/components/Dashboard/BeverageTypes.vue'
+import theaters from '@/components/Dashboard/Theaters.vue'
 
 export default {
     components:{
         movies,
+        theaters,
+        schemas,
         genres,
+        beverage,
         beverageTypes
     },
     data () {
@@ -47,10 +53,10 @@ export default {
                 { name : 'Movies' , 'icon' : 'filmstrip' , component : 'movies' },
                 { name : 'ShowTimes' , icon : 'video-vintage'  },
                 { name : 'Tickets' , icon : 'ticket-account' },
-                { name : 'Theater' , icon : 'theater' },
-                { name : 'Schema' , icon : 'view-carousel' },
+                { name : 'Theater' , icon : 'theater', component: 'theaters'  },
+                { name : 'Schema' , icon : 'view-carousel', component: 'schemas' },
                 { name : 'Genres' , icon : 'lock-pattern', component: 'genres' },
-                { name : 'Beverages' , icon : 'food' },
+                { name : 'Beverages' , icon : 'food', component: 'beverage' },
                 { name : 'Beverage Types' , icon : 'cookie', component: 'beverageTypes'  },
                 { name : 'Settings' , icon : 'cog' },
                 { name : 'Logout' , icon : 'logout' },

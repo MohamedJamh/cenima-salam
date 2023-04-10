@@ -64,9 +64,21 @@ export default createStore({
         },
         //genres
         async getGenres(){
-            const token = localStorage.getItem('token');
-
             const {data} = await axios.get('genres')
+            if(data.status){
+                return data.result
+            }
+        },
+        //Theaters
+        async getTheaters(){
+            const {data} = await axios.get('theaters')
+            if(data.status){
+                return data.result
+            }
+        },
+        //Schemas
+        async getSchemas(){
+            const {data} = await axios.get('schemas')
             if(data.status){
                 return data.result
             }
@@ -74,6 +86,13 @@ export default createStore({
         //companies
         async getCompanies(){
             const {data} = await axios.get('production-companies')
+            if(data.status){
+                return data.result
+            }
+        },
+        //Beverage 
+        async getBeverages(){
+            const {data} = await axios.get('beverages')
             if(data.status){
                 return data.result
             }

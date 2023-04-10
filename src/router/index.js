@@ -6,7 +6,6 @@ import Premier from '../views/PremierMovieView.vue';
 import Upcoming from '../views/UpcomingMovieView.vue';
 import Auth from '../views/Auth/AuthView.vue';
 import Dashboard from '../views/DashboardView.vue';
-import test from '../views/TestView.vue';
 
 const routes = [
     { path: "/",component: Auth},
@@ -15,7 +14,6 @@ const routes = [
     { path: "/Popular",component: Popular},
     { path: "/Premier",component: Premier},
     { path: "/Upcoming",component: Upcoming},
-    { path: "/test",component: test},
 ]
 
 const router = createRouter({

@@ -50,7 +50,7 @@
                                 </div>
                             
                                 <div
-                                :style="{backgroundImage: 'url('+ poster +')'}"
+                                :style="{backgroundImage: 'url('+ formRecord.images[0].url +')'}"
                                 class="tw-h-96 tw-w-72 tw-mx-auto tw-rounded-lg tw-bg-gray-200 tw-my-4 tw-bg-cover">
                                 </div>
                             </div>
@@ -76,17 +76,15 @@
                                                                 <v-row>
                                                                     <v-col cols="12" md="6">
                                                                         <v-file-input
+                                                                        @change="pickImage($event,'backdrop')"
                                                                         accept="image/*"
                                                                         label="BackDrop image"
                                                                         variant="underlined"></v-file-input>
                                                                     </v-col>
                                                                     <v-col cols="12" md="6">
-                                                                        <input type="file"
-                                                                        ref="fileInput"
-                                                                        @click="pickFile">
                                                                         <v-file-input
-                                                                        @change="pickFile"
-                                                                        accept="image/png, image/jpeg, image/bmp"
+                                                                        @change="pickImage($event,'poster')"
+                                                                        accept="image/*"
                                                                         label="Poster image"
                                                                         variant="underlined"></v-file-input>
                                                                     </v-col>
@@ -105,6 +103,7 @@
                                                                         v-model="formRecord.images[0].url"
                                                                         label="Poster url"></v-text-field>
                                                                     </v-col>
+                                                                    <v-btn @click="formRecord.images[0].url">clear</v-btn>
                                                                 </v-row>
                                                             </v-window-item>
                                                         </v-window>
@@ -306,7 +305,6 @@ export default {
         return {
             dialog : false,
             tab : null,
-            poster : null,
             headers:[
                 'Poster',
                 'Title',
@@ -323,6 +321,10 @@ export default {
                 {title:'Premier',value:'premier'},
                 {title:'Upcoming',value:'upcoming'}
             ],
+            onlinePoster : null,
+            onlineBackdrop : null,
+            localPoster : null,
+            localBackdrop : null,
             
             formRecord:{
                 title : '',
@@ -351,16 +353,20 @@ export default {
         }
     },
     methods:{
-        pickFile () {
-            let input = this.$refs.fileInput
-            let file = input.files
-            if (file && file[0]) {
+        pickImage (event,image) {
+            let file = event.target.files[0]
             let reader = new FileReader
-            reader.onload = e => {
-                this.poster = e.target.result
+            reader.onload = () => {
+                switch (image) {
+                    case 'poster':
+                        this.formRecord.images[0].url = reader.result
+                        break;
+                    default:
+                        this.formRecord.images[1].url = reader.result
+                        break;
+                }
             }
-            reader.readAsDataURL(file[0])
-            }
+            reader.readAsDataURL(file)
         }
 
     }
