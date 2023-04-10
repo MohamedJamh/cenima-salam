@@ -125,7 +125,7 @@
             @click="prepareToEdit(beverage)"
             class=" tw-relative tw-rounded-xl tw-overflow-hidden">
                 <div class="tw-flex tw-flex-col tw-rounded-xl tw-overflow-hidden tw-border tw-border-zinc-200">
-                    <img src="https://mustsharenews.com/wp-content/uploads/2022/10/vietnam-popcorn-3.jpg" class="tw-h-4/5 tw-object-cover tw-w-full tw-aspect-square tw-bg-top tw-border-red-500" alt="">
+                    <img :src=" beverage.image.url" class="tw-h-4/5 tw-object-cover tw-w-full tw-aspect-square tw-bg-top tw-border-red-500" alt="">
                     <div class="tw-px-2 tw-py-3">
                         <p class="tw-capitalize tw-font-medium tw-truncate">{{ beverage.title }}</p>
                         <p class="tw-capitalize tw-font-light tw-truncate">{{ beverage.description }}</p>
@@ -214,7 +214,15 @@ export default {
             this.dialog = false
         },
         async addBeverage(){
-            const { data } = await axios.post(`beverages`,this.formRecord)
+            // test
+            let formData = new FormData();
+            formData.append('title', this.formRecord.title);
+            formData.append('description', this.formRecord.description);
+            formData.append('price', this.formRecord.price);
+            formData.append('beverage_type_id', this.formRecord.beverage_type_id);
+            formData.append('image', this.formRecord.image);
+            //
+            const { data } = await axios.post(`beverages`,formData)
 
             let type = null
             if(data.status){
@@ -227,6 +235,9 @@ export default {
                 type : type,
                 messages : [data.message]
             })
+
+            console.log('yes')
+            console.log(data.result)
             this.dialog = false
         },
         close(){
@@ -241,12 +252,13 @@ export default {
             this.dialog = false
         },
         pickImage (event) {
-            let file = event.target.files[0]
-            let reader = new FileReader
-            reader.onload = () => {
-                    this.formRecord.image = reader.result
-            }
-            reader.readAsDataURL(file)
+            this.formRecord.image = event.target.files[0]
+            // let file = event.target.files[0]
+            // let reader = new FileReader
+            // reader.onload = () => {
+            //         this.formRecord.image = reader.result
+            // }
+            // reader.readAsDataURL(file)
         }
     }
 }
