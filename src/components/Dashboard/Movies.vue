@@ -103,7 +103,6 @@
                                                                         v-model="formRecord.images[0].url"
                                                                         label="Poster url"></v-text-field>
                                                                     </v-col>
-                                                                    <v-btn @click="formRecord.images[0].url">clear</v-btn>
                                                                 </v-row>
                                                             </v-window-item>
                                                         </v-window>
@@ -318,7 +317,6 @@ export default {
             movieProductionCompanies : null,
             movieStatus : [
                 {title:'Popular',value:'popular'},
-                {title:'Premier',value:'premier'},
                 {title:'Upcoming',value:'upcoming'}
             ],
             onlinePoster : null,
@@ -348,11 +346,23 @@ export default {
                         url : null
                     },
                 ]
-
             }
         }
     },
     methods:{
+        async addMovie(){
+            const { data } = await axios.post(`movies`,this.formRecord)
+            let type = 'error'
+            if(data.status){
+                type = 'success'
+                this.initialise()
+            }
+            this.$store.dispatch('notify',{
+                type : type,
+                messages : [data.message]
+            })
+            this.close()
+        },
         pickImage (event,image) {
             let file = event.target.files[0]
             let reader = new FileReader
@@ -376,11 +386,4 @@ export default {
     .dialog-bottom-transition-enter-active, .dialog-bottom-transition-leave-active {
         transition: transform .2s ease-in-out;
     }
-
-    
-img,
-video {
-  max-width: 100%;
-  height: auto;
-}
 </style>

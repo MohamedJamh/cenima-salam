@@ -211,15 +211,11 @@ export default {
             this.close()
         },
         async addBeverage(){
-            
             const { data } = await axios.post(`beverages`,this.formRecord)
-
-            let type = null
+            let type = 'error'
             if(data.status){
                 type = 'success'
                 this.initialise()
-            }else{
-                type = 'error'
             }
             this.$store.dispatch('notify',{
                 type : type,

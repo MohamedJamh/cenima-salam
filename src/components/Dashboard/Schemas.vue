@@ -14,14 +14,14 @@
               >
                 <td
                 class="tw-w-8 tw-border-r-2"
-                :class="rowClassification(row.row_label)"
+                :class="'tw-border-r-' + rowClassification(row.row_label)"
                 > <small>{{ row.row_label}}</small></td>
                 <td
                   class="tw-h-7 tw-w-7 tw-border tw-text-center tw-cursor-pointer tw-rounded tw-text-slate-300 tw-border-slate-300 hover:tw-bg-green-400 hover:tw-border-green-500 hover:tw-text-white tw-text-sm"
                   v-for="(bloc , index ) in schema['per_line']"
-                  :class="showbloc(schema, index)"
+                  :class="showbloc(schema, index), 'tw-border-r' + rowClassification(row.row_label)"
                   :key="index"
-                  @click="showSeatData(row.row_label,(index + 1),row.price,row.name)"
+                  @click="showSeatDetails(row.row_label,(index + 1),row.price,row.name)"
                   >{{index + 1}}</td>
             </tr>
         </table>
@@ -36,6 +36,31 @@
                 <div class="tw-h-6 tw-w-6 tw-bg-yellow-200 tw-rounded-sm"></div>Eco 80 DH*
             </div>
         </section>
+            <div class="text-center">
+                <v-dialog
+                transition="dialog-bottom-transition"
+                v-model="seatInfo"
+                width="300"
+                >
+                <v-card>
+                    <v-card-text>
+                    <div class="tw-flex tw-items-center tw-justify-around">
+                        <div class="tw-text-6xl">
+                            <v-icon color="success" icon="mdi-sofa-single"></v-icon>
+                        </div>
+                        <div class="tw-capitalize">
+                            <p><span class="tw-font-medium">Seat : </span>{{ this.seat.label }}</p>
+                            <p><span class="tw-font-medium">Type : </span>{{ this.seat.type }}</p>
+                            <p><span class="tw-font-medium">Price : </span>{{ this.seat.price }}DH</p>
+                        </div>
+                    </div>
+                    </v-card-text>
+                    <v-card-actions>
+                    <v-btn color="primary" block @click="seatInfo = false">Close Dialog</v-btn>
+                    </v-card-actions>
+                </v-card>
+                </v-dialog>
+            </div>
     </div>
 </template>
 <script>
@@ -48,6 +73,12 @@ export default {
     },
     data(){
         return {
+            seatInfo : false,
+            seat : {
+                label : null,
+                type : null,
+                price : null,
+            },
             schemas : null,
             ranks : null
         }
@@ -69,29 +100,28 @@ export default {
         rowClassification(row){
             switch (row) {
                 case 'A' :
-                    return 'tw-border-r-red-500'
+                    return 'red-600'
                     break;
                 case 'B' :
-                    return 'tw-border-r-red-500'
+                    return 'red-600'
                     break;
                 case 'C' :
-                    return 'tw-border-r-green-500'
+                    return 'green-600'
                     break;  
                 case 'D' :
-                    return 'tw-border-r-green-500'
+                    return 'green-600'
                     break;   
                 case 'E' :
-                    return 'tw-border-r-yellow-200'
+                    return 'yellow-300'
                     break;   
             }
+        },
+        showSeatDetails(row, seatNumber , price,type){
+            this.seat.label = '' + row + seatNumber
+            this.seat.type = type
+            this.seat.price = price
+            this.seatInfo = true
         }
-        // showSeatData(row, seatNumber , price,type){
-        //     let data = []
-        //     data["seat"] = row + '' + seatNumber
-        //     data["price"] = price
-        //     data["type"] = type
-        //     console.log(data)
-        // }
     },
     computed:{
         
