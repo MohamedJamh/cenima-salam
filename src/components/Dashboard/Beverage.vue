@@ -14,7 +14,7 @@
                         color="primary"
                         v-bind="props"
                         >
-                        Add Type
+                        Add Beverage
                         </v-btn>
                     </template>
                     <v-card>
@@ -77,7 +77,6 @@
                                     variant="underlined"></v-file-input>
                                 </v-col>
                             </v-row>
-                            {{ formRecord }}
                         </v-container>
                         </v-card-text>
                         <v-card-actions>
@@ -91,7 +90,7 @@
                         </v-btn>
                         <v-btn
                             v-if="dialogAction == 'update'"
-                            class="btn-secondary"
+                            class="btn-primary"
                             variant="text"
                             @click="deleteBeverage()"
                         >
@@ -99,7 +98,7 @@
                         </v-btn>
                         <v-btn
                             v-if="dialogAction == 'update'"
-                            class="btn-secondary"
+                            class="btn-primary tw-w-28"
                             variant="text"
                             @click="updateBeverage()"
                         >
@@ -107,7 +106,7 @@
                         </v-btn>
                         <v-btn
                             v-else
-                            class="btn-secondary"
+                            class="btn-primary tw-w-28"
                             variant="text"
                             @click="addBeverage()"
                         >
@@ -125,13 +124,13 @@
             @click="prepareToEdit(beverage)"
             class=" tw-relative tw-rounded-xl tw-overflow-hidden">
                 <div class="tw-flex tw-flex-col tw-rounded-xl tw-overflow-hidden tw-border tw-border-zinc-200">
-                    <img :src=" beverage.image.url" class="tw-h-4/5 tw-object-cover tw-w-full tw-aspect-square tw-bg-top tw-border-red-500" alt="">
+                    <img :src=" beverage.image.url " class="tw-h-4/5 tw-object-cover tw-w-full tw-aspect-square tw-bg-top tw-border-red-500" alt="">
                     <div class="tw-px-2 tw-py-3">
                         <p class="tw-capitalize tw-font-medium tw-truncate">{{ beverage.title }}</p>
                         <p class="tw-capitalize tw-font-light tw-truncate">{{ beverage.description }}</p>
-                        <div class="tw-flex tw-space-x-2 tw-items-center tw-text-sm">
+                        <div class="tw-flex tw-space-x-2 tw-items-center tw-justify-between tw-text-sm tw-pr-4 ">
                             <span>{{ beverage.type.name }}</span>
-                            <span>{{ beverage.price }}</span>
+                            <span>{{ beverage.price }} DH</span>
                         </div>
                     </div>
                 </div>
@@ -183,46 +182,37 @@ export default {
             this.dialog = true
         },
         async updateBeverage(){
+            Object.keys(this.formRecord)
+            .forEach((property) => (this.formRecord[property] == null || this.formRecord[property] == '' ) && delete this.formRecord[property]);
+
             const { data } = await axios.patch(`beverages/${this.formRecord.id}`,this.formRecord)
-            let type = null
+            let type = 'error'
             if(data.status){
                 type = 'success'
                 this.initialise()
-            }else{
-                type = 'error'
             }
             this.$store.dispatch('notify',{
                 type : type,
                 messages : [data.message]
             })
-            this.dialog = false
+            this.close()
         },
         async deleteBeverage(){
             const { data } = await axios.delete(`beverages/${this.formRecord.id}`)
-
             let type = null
             if(data.status){
                 type = 'success'
                 this.initialise()
-            }else{
-                type = 'error'
             }
             this.$store.dispatch('notify',{
                 type : type,
                 messages : [data.message]
             })
-            this.dialog = false
+            this.close()
         },
         async addBeverage(){
-            // test
-            let formData = new FormData();
-            formData.append('title', this.formRecord.title);
-            formData.append('description', this.formRecord.description);
-            formData.append('price', this.formRecord.price);
-            formData.append('beverage_type_id', this.formRecord.beverage_type_id);
-            formData.append('image', this.formRecord.image);
-            //
-            const { data } = await axios.post(`beverages`,formData)
+            
+            const { data } = await axios.post(`beverages`,this.formRecord)
 
             let type = null
             if(data.status){
@@ -235,13 +225,9 @@ export default {
                 type : type,
                 messages : [data.message]
             })
-
-            console.log('yes')
-            console.log(data.result)
-            this.dialog = false
+            this.close()
         },
         close(){
-            
             this.formRecord.id = null
             this.formRecord.title = null
             this.formRecord.description = null
@@ -252,13 +238,12 @@ export default {
             this.dialog = false
         },
         pickImage (event) {
-            this.formRecord.image = event.target.files[0]
-            // let file = event.target.files[0]
-            // let reader = new FileReader
-            // reader.onload = () => {
-            //         this.formRecord.image = reader.result
-            // }
-            // reader.readAsDataURL(file)
+            let file = event.target.files[0]
+            let reader = new FileReader
+            reader.onload = () => {
+                    this.formRecord.image = reader.result
+            }
+            reader.readAsDataURL(file)
         }
     }
 }

@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 .btn-primary{
-    @apply tw-bg-red-600 hover:tw-bg-red-700 tw-text-white tw-rounded-lg;
+    @apply tw-bg-red-600 hover:tw-bg-red-700 tw-text-white tw-rounded-md;
 }
 .btn-secondary{
-  @apply tw-border tw-border-red-200 tw-text-red-600 tw-bg-white tw-rounded-lg
+  @apply tw-border tw-border-red-200 tw-text-red-600 tw-bg-white tw-rounded-md
 }
