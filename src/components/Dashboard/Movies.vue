@@ -35,10 +35,18 @@
                                 <v-spacer></v-spacer>
                                 <v-toolbar-items>
                                     <v-btn
+                                    v-if="dialogAction == 'add'"
                                     variant="text"
-                                    @click="dialog = false"
+                                    @click="addMovie()"
                                     >
                                     Save
+                                    </v-btn>
+                                    <v-btn
+                                    v-if="dialogAction == 'update'"
+                                    variant="text"
+                                    @click="updateMovie()"
+                                    >
+                                    Update
                                     </v-btn>
                                 </v-toolbar-items>
                             </v-toolbar>
@@ -59,6 +67,16 @@
                                     <v-form >
                                         <v-container>
                                         <v-row>
+                                            <v-col cols="12" >
+                                                <v-switch
+                                                class="tw-float-right"
+                                                v-model="ignoreImagesOnUpdate"
+                                                label="Ignore Images"
+                                                color="error"
+                                                value="error"
+                                                hide-details
+                                                ></v-switch>
+                                            </v-col>
                                             <v-col cols="12" md="12">
                                                 <v-card class="elevation-0" >
                                                     <v-tabs
@@ -163,7 +181,7 @@
                                             </v-col>
                                             <v-col cols="12" md="4" >
                                                 <v-select
-                                                    v-model="formRecord.companies"
+                                                    v-model="formRecord.production_companies"
                                                     :items="movieProductionCompanies"
                                                     item-title="name"
                                                     item-value="id"
@@ -194,10 +212,10 @@
                                                 label="Rate"></v-text-field>
                                             </v-col>
                                             <v-col cols="12" md="6" >
-                                                <datepicker
-                                                class="tw-bg-gray-100 tw-w-full tw-px-5 tw-py-4 tw-rounded-sm focus:tw-outline-none tw-border tw-border-gray-400"
-                                                :disabled-date="true"
-                                                v-model="formRecord.release_date" />
+                                                <v-text-field
+                                                v-model="formRecord.release_date"
+                                                label="Release Date"
+                                                ></v-text-field>
                                             </v-col>
                                             <v-col cols="12" md="6" >
                                                 <v-text-field
@@ -243,7 +261,7 @@
                           scope="row"
                           class="tw-px-6 tw-py-4 tw-font-medium tw-text-gray-900 tw-whitespace-nowrap ">
                             <div class="tw-h-28 tw-w-20 tw-rounded-md tw-overflow-hidden">
-                                <img :src="movie.images[0].url" class="" alt="">
+                                <img :src="movie.images[0].url " class="" alt="">
                             </div>
                         </td>
                         <th scope="row" class="tw-px-6 tw-py-4 tw-whitespace-nowrap ">
@@ -266,6 +284,7 @@
                                 <v-icon
                                 color="primary"
                                 icon="mdi-movie-edit-outline"
+                                @click="prepareToEdit(movie)"
                                 size="large"></v-icon>
                             </div>
                         </td>
@@ -284,15 +303,14 @@
     </div>
 </template>
 <script>
-import Datepicker from 'vue3-datepicker'
+import axios from 'axios';
+
 export default {
     components:{
-        Datepicker
+        
     },
     async created(){
-        this.movies = await this.$store.dispatch('getAllMovies').then(data => {
-            return data
-        })
+        this.initialise()
         this.movieGenres = await this.$store.dispatch('getGenres').then(data =>{
             return data
         })
@@ -302,6 +320,8 @@ export default {
     },
     data(){
         return {
+            ignoreImagesOnUpdate : false,
+            dialogAction : 'add',
             dialog : false,
             tab : null,
             headers:[
@@ -328,14 +348,14 @@ export default {
                 title : '',
                 tagline : '',
                 overview : '',
-                release_date : new Date(),
+                release_date : '',
                 language : '',
                 runtime : 0,
                 rate : 0,
                 budget : 0,
                 status : 'popular',
                 genres : [1],
-                companies : [1],
+                production_companies : [1],
                 images : [
                     {
                         type : 'poster',
@@ -350,7 +370,13 @@ export default {
         }
     },
     methods:{
+        async initialise(){
+            this.movies = await this.$store.dispatch('getAllMovies').then(data => {
+                return data
+            })
+        },
         async addMovie(){
+
             const { data } = await axios.post(`movies`,this.formRecord)
             let type = 'error'
             if(data.status){
@@ -361,8 +387,72 @@ export default {
                 type : type,
                 messages : [data.message]
             })
+            console.log(data.result)
             this.close()
         },
+        async updateMovie(){
+            if(this.ignoreImagesOnUpdate) this.formRecord.images = null
+            Object.keys(this.formRecord)
+            .forEach((property) => (this.formRecord[property] == null || this.formRecord[property] == '' ) && delete this.formRecord[property]);
+            
+            const { data } = await axios.put(`movies/${this.formRecord.id}`,this.formRecord)
+            let type = 'error'
+            if(data.status){
+                type = 'success'
+                this.initialise()
+            }
+            this.$store.dispatch('notify',{
+                type : type,
+                messages : [data.message]
+            })
+            console.log(data.result)
+            this.close()
+        },
+        prepareToEdit(movie){
+            this.formRecord = movie
+
+            let genresArray = []
+            let companiesArray = []
+            this.movieGenres.forEach(movieGenre => {
+                movie.genres.forEach(genre => {
+                    if(movieGenre.name == genre) genresArray.push(movieGenre.id)
+                });
+            });
+            this.movieProductionCompanies.forEach(movieCompany => {
+                movie.production_companies.forEach(company => {
+                    if(movieCompany.name == company) companiesArray.push(movieCompany.id)
+                });
+            });
+            this.formRecord.genres = genresArray
+            this.formRecord.production_companies = companiesArray
+
+            this.dialogAction = 'update'
+            this.dialog = true
+        },
+        close(){
+            this.formRecord.title = null
+            this.formRecord.tagline = null
+            this.formRecord.overview = null
+            this.formRecord.budget = 0
+            this.formRecord.runtime = 0
+            this.formRecord.rate = 0
+            this.formRecord.language = null
+            this.formRecord.release_date = null
+            this.formRecord.images = [
+                {
+                    type : 'poster',
+                    url : null
+                },
+                {
+                    type : 'backdrop',
+                    url : null
+                },
+            ]
+
+            this.dialogAction = 'add'
+            this.dialog = false
+        },
+
         pickImage (event,image) {
             let file = event.target.files[0]
             let reader = new FileReader
