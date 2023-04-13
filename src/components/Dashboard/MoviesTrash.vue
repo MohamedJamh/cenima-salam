@@ -6,6 +6,7 @@
                 <v-btn
                 color="primary"
                 class="tw-mx-2"
+                @click="forceDeleteAllMovies()"
                 >
                 Delete All
                 </v-btn>
@@ -37,17 +38,18 @@
                     </tr>
                 </thead>
                 <tbody >
-                    <tr class="tw-text-center" v-if="this.trash.length == 0" >
+                    <tr class="tw-text-center" v-if="trash.length == 0" >
                         <td class="tw-py-8 tw-text-2xl" colspan="8">No Available Data</td>
                     </tr>
                     <tr
+                      v-else
                       v-for="movie in trash"
                       class="tw-bg-white tw-border-b ">
                         <td
                           scope="row"
                           class="tw-px-6 tw-py-4 tw-font-medium tw-text-gray-900 tw-whitespace-nowrap ">
                             <div class="tw-h-28 tw-w-20 tw-rounded-md tw-overflow-hidden">
-                                <img :src="movie.images[0].url " class="" alt="">
+                                <img :src="movie.images[0]?.url " class="" alt="">
                             </div>
                         </td>
                         <th scope="row" class="tw-px-6 tw-py-4 tw-whitespace-nowrap ">
@@ -94,6 +96,7 @@ import axios from 'axios'
 export default {
     async created(){
         this.getTrashedMovies()
+        console.log(this.trash)
     },
     data(){
         return {
@@ -114,6 +117,7 @@ export default {
             if(data.status){
                 this.trash = data.result
             }
+            console.log(this.trash.length)
         },
         async restoreMovie(movieId){
             const {data} = await axios.get(`movies/trashed/${movieId}/restore`)
@@ -141,6 +145,18 @@ export default {
         },
         async restoreAll(){
             const {data} = await axios.get(`movies/trashed/restore`)
+            let type = 'error'
+            if(data.status){
+                type = 'success'
+            }
+            this.getTrashedMovies()
+            this.$store.dispatch('notify',{
+                type : type,
+                messages : [data.message]
+            })
+        },
+        async forceDeleteAllMovies(){
+            const {data} = await axios.get(`movies/trashed/delete`)
             let type = 'error'
             if(data.status){
                 type = 'success'
