@@ -3,7 +3,7 @@
         <v-snackbar
             v-model="this.$store.state.showNotification"
             :color="this.$store.state.notificationMessage.type"
-            location="top"
+            location="bottom right"
             
           >
             <div class="text-subtitle-1 pb-2">Notification</div>

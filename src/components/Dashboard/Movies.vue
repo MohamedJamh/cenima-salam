@@ -69,6 +69,7 @@
                                         <v-row>
                                             <v-col cols="12" >
                                                 <v-switch
+                                                v-if="dialogAction == 'update'"
                                                 class="tw-float-right"
                                                 v-model="ignoreImagesOnUpdate"
                                                 label="Ignore Images"
@@ -224,7 +225,6 @@
                                                 :min="0"
                                                 label="Budget"></v-text-field>
                                             </v-col>
-                                            {{ formRecord }}
                                         </v-row>
                                         </v-container>
                                     </v-form>
@@ -293,6 +293,7 @@
                                 <v-icon
                                 color="primary"
                                 icon="mdi-delete-empty-outline"
+                                @click="deleteMovie(movie.id)"
                                 size="large"></v-icon>
                             </div>
                         </td>
@@ -387,7 +388,6 @@ export default {
                 type : type,
                 messages : [data.message]
             })
-            console.log(data.result)
             this.close()
         },
         async updateMovie(){
@@ -399,15 +399,27 @@ export default {
             let type = 'error'
             if(data.status){
                 type = 'success'
-                this.initialise()
             }
+            this.initialise()
             this.$store.dispatch('notify',{
                 type : type,
                 messages : [data.message]
             })
-            console.log(data.result)
             this.close()
         },
+        async deleteMovie(movieId){
+            const { data } = await axios.delete(`movies/${movieId}`)
+            let type = 'error'
+            if(data.status){
+                type = 'success'
+            }
+            this.initialise()
+            this.$store.dispatch('notify',{
+                type : type,
+                messages : [data.message]
+            })
+            this.close()
+        }, 
         prepareToEdit(movie){
             this.formRecord = movie
 
