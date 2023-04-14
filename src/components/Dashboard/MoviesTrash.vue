@@ -117,7 +117,6 @@ export default {
             if(data.status){
                 this.trash = data.result
             }
-            console.log(this.trash.length)
         },
         async restoreMovie(movieId){
             const {data} = await axios.get(`movies/trashed/${movieId}/restore`)
@@ -132,12 +131,15 @@ export default {
             })
         },
         async forceDeleteMovie(movieId){
-            const {data} = await axios.get(`movies/trashed/${movieId}/delete`)
+
+            const {data} = await axios.delete(`movies/trashed/${movieId}/delete`)
             let type = 'error'
             if(data.status){
                 type = 'success'
             }
             this.getTrashedMovies()
+            console.log(movieId)
+            console.log(data.result)
             this.$store.dispatch('notify',{
                 type : type,
                 messages : [data.message]
@@ -156,7 +158,7 @@ export default {
             })
         },
         async forceDeleteAllMovies(){
-            const {data} = await axios.get(`movies/trashed/delete`)
+            const {data} = await axios.delete(`movies/trashed/delete`)
             let type = 'error'
             if(data.status){
                 type = 'success'

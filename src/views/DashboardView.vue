@@ -32,6 +32,7 @@
 <script>
 import movies from '@/components/Dashboard/Movies.vue'
 import moviesTrash from '@/components/Dashboard/MoviesTrash.vue'
+import showtimes from '@/components/Dashboard/Showtimes.vue'
 import schemas from '@/components/Dashboard/Schemas.vue'
 import genres from '@/components/Dashboard/Genres.vue'
 import beverage from '@/components/Dashboard/Beverage.vue'
@@ -42,6 +43,7 @@ export default {
     components:{
         movies,
         moviesTrash,
+        showtimes,
         theaters,
         schemas,
         genres,
@@ -54,7 +56,7 @@ export default {
             menuNav : [
                 { name : 'Movies' , icon : 'filmstrip' , component : 'movies' },
                 { name : 'Movies Trash' , icon : 'movie-open-remove' , component : 'moviesTrash' },
-                { name : 'ShowTimes' , icon : 'video-vintage'  },
+                { name : 'ShowTimes' , icon : 'video-vintage' , component : 'showtimes'  },
                 { name : 'Tickets' , icon : 'ticket-account' },
                 { name : 'Theater' , icon : 'theater', component: 'theaters'  },
                 { name : 'Schema' , icon : 'view-carousel', component: 'schemas' },
