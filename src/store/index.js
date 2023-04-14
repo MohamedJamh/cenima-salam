@@ -62,6 +62,13 @@ export default createStore({
                 return data.result
             }
         },
+        //showtimes
+        async getShowtimes(){
+            const {data} = await axios.get('showtimes')
+            if(data.status){
+                return data.result
+            }
+        },
         //genres
         async getGenres(){
             const {data} = await axios.get('genres')

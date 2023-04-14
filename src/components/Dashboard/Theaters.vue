@@ -107,7 +107,7 @@
                 <tbody>
                     <tr
                       v-for="theater in theaters"
-                      class="tw-bg-white tw-border-b ">
+                      class="tw-bg-white tw-border-b">
                         <th scope="row" class="tw-px-6 tw-py-4 tw-whitespace-nowrap ">
                             {{ theater.name }}
                         </th>
@@ -116,6 +116,9 @@
                         </th>
                         <th scope="row" class="tw-px-6 tw-py-4 tw-whitespace-nowrap ">
                             {{ theater.schema.capacity }}
+                        </th>
+                        <th scope="row" class="tw-px-6 tw-py-4 tw-whitespace-nowrap ">
+                            {{ theater.showtimes.length }}
                         </th>
                         <td class="tw-px-2 tw-py-4 tw-cursor-pointer">
                             <div @click="prepareToEdit(theater)">
@@ -166,7 +169,8 @@ export default {
             headers:[
                 'Name',
                 'Schema Name',
-                'Capacity'
+                'Capacity',
+                'Showtimes'
             ],
             formRecord : {
                 id : null,

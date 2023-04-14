@@ -4,7 +4,7 @@
             v-model="this.$store.state.showNotification"
             :color="this.$store.state.notificationMessage.type"
             location="bottom right"
-            
+            class="tw-my-3 tw-mx-2"
           >
             <div class="text-subtitle-1 pb-2">Notification</div>
 

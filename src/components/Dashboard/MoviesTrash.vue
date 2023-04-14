@@ -39,7 +39,7 @@
                 </thead>
                 <tbody >
                     <tr class="tw-text-center" v-if="trash.length == 0" >
-                        <td class="tw-py-8 tw-text-2xl" colspan="8">No Available Data</td>
+                        <td class="tw-py-8 tw-text-2xl" colspan="8">Empty Trash</td>
                     </tr>
                     <tr
                       v-else

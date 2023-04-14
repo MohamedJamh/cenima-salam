@@ -184,13 +184,10 @@ export default {
             const { data } = await axios.post(`genres`,{
                 name : this.formRecord.name
             })
-
-            let type = null
+            let type = 'error'
             if(data.status){
                 type = 'success'
                 this.initialise()
-            }else{
-                type = 'error'
             }
             this.$store.dispatch('notify',{
                 type : type,
