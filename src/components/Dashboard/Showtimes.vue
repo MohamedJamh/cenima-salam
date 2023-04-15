@@ -46,6 +46,7 @@
                                     ></v-text-field>
                                 </v-col>
                                 <v-col
+                                    v-if="dialogAction == 'add'"
                                     cols="12"
                                     md="6"
                                 >
@@ -89,7 +90,7 @@
                             v-if="dialogAction == 'update'"
                             class="btn-primary tw-w-28"
                             variant="text"
-                            @click="updateBeverage()"
+                            @click="updateShowtime()"
                         >
                             Update
                         </v-btn>
@@ -208,15 +209,31 @@ export default {
     },
     methods:{
         prepareToEdit(showtime){
+            this.formRecord.id = showtime.id
             this.formRecord.date = showtime.date
-            this.formRecord.starts = showtime.starts
-            // this.formRecord.movie_id = 2,
             this.formRecord.theater_id = showtime.theater.theater_id,
+            //casting time
             this.dialogAction = 'update'
             this.dialog = true
         },
         async addShowtime(){
             const { data } = await axios.post(`showtimes`,this.formRecord)
+            let type = 'error'
+            if(data.status){
+                type = 'success'
+                this.initialise()
+            }
+            this.$store.dispatch('notify',{
+                type : type,
+                messages : [data.message]
+            })
+            this.dialog = false
+        },
+        async updateShowtime(){
+            Object.keys(this.formRecord)
+            .forEach((property) => (this.formRecord[property] == null || this.formRecord[property] == '' ) && delete this.formRecord[property]);
+
+            const { data } = await axios.patch(`showtimes/${this.formRecord.id}`,this.formRecord)
             let type = 'error'
             if(data.status){
                 type = 'success'
