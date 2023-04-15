@@ -103,8 +103,6 @@
                             Add
                         </v-btn>
                         </v-card-actions>
-                        
-                        {{ this.formRecord }}
                     </v-card>
                     </v-dialog>
                 </v-row>
@@ -155,7 +153,8 @@
                                 <v-icon
                                 color="primary"
                                 icon="mdi-table-edit"
-                                size="large"></v-icon>
+                                size="large"
+                                ></v-icon>
                             </div>
                         </td>
                         <td class="tw-px-2 tw-py-4 tw-cursor-pointer">

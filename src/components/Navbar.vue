@@ -16,10 +16,10 @@ export default {
     data(){
         return {
             links:[
-                { 'path': '/Home','name':'Home'},
-                { 'path': '/Popular','name':'Popular'},
-                { 'path': '/Premier','name':'Premier'},
-                { 'path': '/Upcoming','name':'Upcoming'},
+                { path: '/Home', name:'Home'},
+                { path: '/Popular', name:'Popular'},
+                { path: '/Upcoming', name:'Upcoming'},
+                { path: '/Showtimes', name:'Showtimes'},
             ]
         }
     }

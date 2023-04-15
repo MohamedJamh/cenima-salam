@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import Home from '../views/HomeView.vue';
 import Popular from '../views/PopularMovieView.vue';
-import Premier from '../views/PremierMovieView.vue';
+import Showtimes from '../views/ShowtimesView.vue';
+import ShowtimesDetails from '../views/ShowtimeDetailsView.vue';
 import Upcoming from '../views/UpcomingMovieView.vue';
 import Auth from '../views/Auth/AuthView.vue';
 import Dashboard from '../views/DashboardView.vue';
@@ -12,7 +13,8 @@ const routes = [
     { path: "/Dashboard",component: Dashboard},
     { path: "/Home",component: Home},
     { path: "/Popular",component: Popular},
-    { path: "/Premier",component: Premier},
+    { path: "/Showtimes",component: Showtimes},
+    { path: "/Showtimes/:id",component: ShowtimesDetails},
     { path: "/Upcoming",component: Upcoming},
 ]
 

@@ -5,8 +5,9 @@
                 <navbar />
                 <h2 class="tw-text-white tw-text-4xl tw-font-semibold tw-my-4">Premier Movies</h2>
                 <moviebanner
-                v-for="movie in premier"
-                :movie="movie"
+                v-for="showtime in showtimes"
+                :movie="showtime.movie"
+                :showtime="showtime"
                 />
             </main>
             <rightsidebar 
@@ -38,17 +39,17 @@ export default {
         this.popular = await this.$store.dispatch('getPopularMovies').then(data => {
             return data
         })
-        this.premier = await this.$store.dispatch('getPremierMovies').then(data => {
+        this.upcoming = await this.$store.dispatch('getUpcomingMovies').then(data => {
             return data
         })
-        this.upcoming = await this.$store.dispatch('getUpcomingMovies').then(data => {
+        this.showtimes = await this.$store.dispatch('getShowtimes').then(data => {
             return data
         })
     },
     data(){
         return{
             popular : null,
-            premier : null,
+            showtimes : null,
             upcoming : null,
         }
     },

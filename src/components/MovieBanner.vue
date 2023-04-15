@@ -10,13 +10,20 @@
                 <div class="tw-text-xs tw-text-gray-300 tw-mt-2">
                     <a class="tw-mx-1" v-for="genre in movie.genres">{{genre}}</a>
                 </div>
-                <div class="tw-mt-4 tw-flex tw-space-x-3 tw-items-center">
-                    <a href="#" class="tw-px-5 tw-py-2.5 tw-bg-red-600 hover:tw-bg-red-700 tw-rounded-lg tw-text-xs tw-inline-block">Watch</a>
-                    <a href="#" title="Add movie to your watchlist" class="tw-p-2.5 tw-bg-gray-800/80 tw-rounded-lg hover:tw-bg-red-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-4 tw-w-4" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"></path>
-                        </svg>
-                    </a>
+                <div class="tw-mt-4 tw-space-x-3 tw-flex tw-justify-between tw-items-center tw-flex-col md:tw-flex-row">
+                    <div class="tw-flex tw-items-center">
+                        <router-link v-if="showtime" :to="`/Showtimes/${showtime.id}`">
+                            <a href="#" class="tw-px-5 tw-py-2.5 tw-bg-red-600 hover:tw-bg-red-700 tw-rounded-lg tw-text-xs tw-inline-block">Watch</a>
+                        </router-link>
+                        <a v-if="!showtime" href="#" title="Add movie to your watchlist" class="tw-p-2.5 tw-bg-gray-800/80 tw-rounded-lg hover:tw-bg-red-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-4 tw-w-4" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <span v-if="showtime" class=" tw-font-semibold tw-text-xl tw-drop-shadow-2xl" >
+                        {{ showtime.date }} | {{ showtime.starts }}
+                    </span>
                 </div>
             </div>
         </div>
@@ -25,7 +32,7 @@
 <script>
 export default {
     name:'moviebanner',
-    props:['movie'],
+    props:['movie','showtime'],
     created(){
 
     }

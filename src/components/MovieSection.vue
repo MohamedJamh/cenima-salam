@@ -2,7 +2,7 @@
     <div class="tw-mt-9">
         <div class="tw-flex tw-items-center tw-justify-between">
             <span class="tw-font-semibold tw-text-white tw-text-base">{{ this.sectionTitle }}</span>
-            <arrowcirclebutton link="/Login" />
+            <arrowcirclebutton :link="allMoviesPath" />
         </div>
         <div 
         class="tw-mt-4 tw-gap-x-5 tw-gap-y-5 tw-grid tw-grid-cols-2 sm:tw-grid-cols-4" 
