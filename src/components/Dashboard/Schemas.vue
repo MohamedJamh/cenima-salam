@@ -19,7 +19,7 @@
                 <td
                   class="tw-h-7 tw-w-7 tw-border tw-text-center tw-cursor-pointer tw-rounded tw-text-slate-300 tw-border-slate-300 hover:tw-bg-green-400 hover:tw-border-green-500 hover:tw-text-white tw-text-sm"
                   v-for="(bloc , index ) in schema['per_line']"
-                  :class="showbloc(schema, index), 'tw-border-r' + rowClassification(row.row_label)"
+                  :class="showbloc(schema, index)"
                   :key="index"
                   @click="showSeatDetails(row.row_label,(index + 1),row.price,row.name)"
                   >{{index + 1}}</td>

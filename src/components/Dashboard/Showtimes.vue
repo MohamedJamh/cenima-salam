@@ -211,6 +211,7 @@ export default {
             this.formRecord.id = showtime.id
             this.formRecord.date = showtime.date
             this.formRecord.theater_id = showtime.theater.theater_id,
+            this.formRecord.movie_id = null
             //casting time
             this.dialogAction = 'update'
             this.dialog = true

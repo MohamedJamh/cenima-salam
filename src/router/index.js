@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from '../views/HomeView.vue';
 import Popular from '../views/PopularMovieView.vue';
 import Showtimes from '../views/ShowtimesView.vue';
-import ShowtimesDetails from '../views/ShowtimeDetailsView.vue';
+import ShowtimesDetails from '../views/ShowtimeReservationView.vue';
 import Upcoming from '../views/UpcomingMovieView.vue';
 import Auth from '../views/Auth/AuthView.vue';
 import Dashboard from '../views/DashboardView.vue';
