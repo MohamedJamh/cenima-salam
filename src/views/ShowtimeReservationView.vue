@@ -18,6 +18,7 @@
 import axios from 'axios'
 import showtimeDetails from '@/components/Showtime/Details.vue'
 import showtimeTheater from '@/components/Showtime/Theater.vue'
+import showtimeBeverage from '@/components/Showtime/Beverage.vue'
 
 export default {
     props : ['id'],
@@ -25,7 +26,6 @@ export default {
         this.showtime = this.components[0].props.showtime = await this.getShowtime().then(data => {
             return data
         })
-
     }, 
     data(){
         return {
@@ -43,6 +43,7 @@ export default {
                                 return data
                             })
                             this.components[1].props.tickets = this.showtime.tickets
+                            this.ticket.showtime_id = this.showtimeId
                             this.componentIndex = 1
                         }.bind(this)
                     }
@@ -54,24 +55,42 @@ export default {
                         tickets : null
                     },
                     events:{
-                        pickSeat : function(data){
-                            this.ticket.seat = data.seatLabel
+                        pickSeat : async function(data){
+                            this.ticket.seats = data.seatLabel
                             this.ticket.price = data.price
+                            this.components[2].props.beverages = await this.$store.dispatch('getBeverages').then(data => {
+                                return data
+                            })
+                            this.componentIndex = 2
+                        }.bind(this)
+                    }
+                },
+                {
+                    name : 'showtimeBeverage',
+                    props : {
+                        beverages : 'hahah',
+                    },
+                    events:{
+                        addBeverage : async function(selectedBeverage){
+                            this.ticket.beverages = selectedBeverage
+                            await this.getTicket()
                         }.bind(this)
                     }
                 }
             ],
             ticket : {
-                seat : null,
+                seats : null,
                 price : null,
-                user_id: null, 
-                showtime_id: null
-            }
+                user_id: 1, 
+                showtime_id: null,
+                beverages : null
+            },
         }
     },
     components:{
         showtimeDetails,
-        showtimeTheater
+        showtimeTheater,
+        showtimeBeverage
     },
     computed:{
         showtimeId(){
@@ -90,11 +109,24 @@ export default {
             if(data.status){
                 return data.result
             }
+        },
+        async getTicket(){
+            const { data } = await axios.post(`tickets`,this.ticket)
+            
+            let type = 'error'
+            if(data.status){
+                type = 'success'
+            }
+            this.$store.dispatch('notify',{
+                type : type,
+                messages : [data.message]
+            })
         }
     }
 
 }
 </script>
 <style >
+
 
 </style>

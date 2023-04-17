@@ -28,10 +28,11 @@
         <div class="tw-text-center">
             <v-btn
             v-if="seatChosen"
+            :loading="loading"
             color="primary"
             height="40"
             class="tw-w-32"
-            @click="this.$emit('pickSeat',{seatLabel,price})"
+            @click="this.$emit('pickSeat',{seatLabel,price});loading = true"
             >
             Next
             </v-btn>
@@ -49,6 +50,7 @@ export default {
     },
     data(){
         return {
+            loading : false,
             ranks : null,
             seatChosen : false,
             seat : null,
