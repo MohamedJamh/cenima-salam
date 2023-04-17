@@ -1,14 +1,14 @@
 <template >
     <section class="tw-bg-gray-900 tw-text-white tw-h-screen">
-            <div class="tw-relative tw-bg-cover tw-bg-center tw-w-full tw-h-fit" v-if="showtime" :style="{backgroundImage: 'url('+ showtime.movie.images[1].url +')'}">
-                <div class="tw-bg-gray-900/90 tw-h-fit">
+            <div class="tw-relative tw-bg-cover tw-bg-center tw-w-full tw-min-h-screen" v-if="showtime" :style="{backgroundImage: 'url('+ showtime.movie.images[1].url +')'}">
+                <div class="tw-bg-gray-900/90 tw-min-h-screen">
                     <div class="tw-container tw-mx-auto">
                         <component 
+                        class=" tw-pt-40"
                         :is="components[componentIndex].name" 
                         v-bind="components[componentIndex].props"
                         v-on="components[componentIndex].events"
                         ></component>
-                        <!-- <showtimeDetails :showtime="showtime" /> -->
                     </div>
                 </div>
             </div>
@@ -53,9 +53,20 @@ export default {
                         theater : null,
                         tickets : null
                     },
-                    events:{}
+                    events:{
+                        pickSeat : function(data){
+                            this.ticket.seat = data.seatLabel
+                            this.ticket.price = data.price
+                        }.bind(this)
+                    }
                 }
             ],
+            ticket : {
+                seat : null,
+                price : null,
+                user_id: null, 
+                showtime_id: null
+            }
         }
     },
     components:{

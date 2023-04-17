@@ -1,39 +1,41 @@
 <template >
-    <div class="tw-h-screen tw-flex tw-flex-col tw-justify-center tw-gap-5">
-        <h1 class="tw-text-4xl tw-font-semibold tw-text-center" >{{this.theater.name}} Theater</h1>
-        <div>
-            <table class="tw-mx-auto">
+    <div class="tw-flex tw-flex-col tw-justify-center tw-gap-5">
+        <h1 class=" tw-text-base md:tw-text-4xl tw-font-semibold tw-text-center" >{{this.theater.name}} Theater</h1>
+        <div class="tw-w-full tw-overflow-x-auto">
+            <table class="tw-mx-auto ">
                 <tr
-                class="tw-flex tw-gap-3 tw-my-2"
+                class="tw-flex tw-gap-1 md:tw-gap-3 md:tw-my-2"
                 v-for="(row,index) in ranks"
                 :key="index"
                 >
                     <td
-                    class="tw-w-8 tw-border-r-2 tw-text-2xl"
+                    class="tw-w-8 tw-border-r md:tw-border-r-2 tw-text-lg md:tw-text-2xl"
                     :class="'tw-border-r-' + rowClassification(row.row_label)"
                     > <small>{{ row.row_label}}</small></td>
                     <td
-                    class="tw-bg-zinc-800/80 tw-h-10 tw-w-10 tw-border tw-cursor-pointer tw-rounded tw-text-white/75 tw-border-slate-600 hover:tw-bg-green-400 hover:tw-border-green-500 hover:tw-text-white tw-text-base tw-flex tw-items-center tw-justify-center"
+                    class="tw-bg-zinc-800/80 tw-h-6 tw-w-6 md:tw-h-10 md:tw-w-10 tw-border tw-cursor-pointer tw-rounded tw-text-white/75 tw-border-slate-600 hover:tw-bg-green-400 hover:tw-border-green-500 hover:tw-text-white tw-text-xs md:tw-text-base tw-flex tw-items-center tw-justify-center"
                     v-for="(bloc , index ) in theater.schema.per_line"
                     :class="showbloc(theater.schema, index , row.row_label)"
                     :key="index"
-                    @click="chooseSeat($event,row.row_label, index)"
+                    @click="chooseSeat($event,row.row_label, index,row.price)"
                     >{{index + 1}}</td>
                 </tr>
             </table>
-            <div class="tw-mx-auto tw-mt-20 tw-w-96 tw-border-sky-400/50 tw-border-b-8 tw-rounded-b-lg tw-text-center tw-py-2 tw-text-sm">
-                All eyes here
-            </div>
-            <div>
-                <v-btn
-                v-if="seatChosen"
-                color="primary"
-                height="50"
-
-                >
-                Next
-                </v-btn>
-            </div>
+        </div>
+        <div class="tw-mx-auto tw-mt-5 md:tw-mt-20 tw-w-52 md:tw-w-96 tw-border-sky-400/50 tw-border-b-8 tw-rounded-b-lg tw-text-center tw-py-2 tw-text-sm">
+            All eyes here
+        </div>
+        <div class="tw-text-center">
+            <v-btn
+            v-if="seatChosen"
+            color="primary"
+            height="40"
+            class="tw-w-32"
+            @click="this.$emit('pickSeat',{seatLabel,price})"
+            >
+            Next
+            </v-btn>
+            <small v-else>Choose your seat</small>
         </div>
     </div>
 </template>
@@ -44,13 +46,14 @@ export default {
     props:['theater','tickets'],
     async created(){
         await this.getRows()
-        console.log(this.tickets)
     },
     data(){
         return {
             ranks : null,
             seatChosen : false,
             seat : null,
+            seatLabel : null,
+            price : null
         }
     },
     methods:{
@@ -75,7 +78,7 @@ export default {
                     break;
                 case 'C' :
                     return 'green-600'
-                    break;  
+                    break;
                 case 'D' :
                     return 'green-600'
                     break;   
@@ -84,18 +87,24 @@ export default {
                     break;   
             }
         },
-        chooseSeat(event,rowLabel, index){
-            if(this.tickets.includes( rowLabel + '' + (index + 1))){
+        chooseSeat(event,rowLabel, index , price){
+            let seatLabel = rowLabel + '' + (index + 1)
+            if(this.tickets.includes( seatLabel )){
                 this.$store.dispatch('notify',{
                     type : 'error',
                     messages : ['Seat already reserved']
                 })
             }else{
-                const seat = event.target
-                seat.classList.add('tw-bg-green-500')
-                console.log(seat)
+                if(this.seat){
+                    this.seat.classList.remove('tw-bg-green-500')
+                    this.seat.classList.add('tw-bg-zinc-800/80')
+                } 
+                this.seat = event.target
+                this.seat.classList.remove('tw-bg-zinc-800/80')
+                this.seat.classList.add('tw-bg-green-500')
+                this.seatLabel = seatLabel
+                this.price = price
                 this.seatChosen = true
-                // console.log('yey')
             }
         }
     }

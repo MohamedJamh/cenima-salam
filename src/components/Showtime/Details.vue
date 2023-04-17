@@ -1,5 +1,5 @@
 <template>
-    <div class="tw-flex tw-flex-col md:tw-flex-row tw-items-center tw-justify-center tw-gap-4 tw-h-screen">
+    <div class="tw-flex tw-flex-col md:tw-flex-row tw-items-center tw-justify-center tw-gap-4 tw-py-4">
         <div class="tw-w-1/3 tw-hidden md:tw-block">
             <movieposter
                 :img-path="showtime.movie.images[0].url"
@@ -26,8 +26,8 @@
                 </span>
                 <span>( {{ showtime.movie.release_date }} )</span>
             </div>
-            <h2 class="tw-mt-10 tw-font-bold tw-text-2xl">Overview</h2>
-            <p class="tw-mt-2 tw-max-w-3xl tw-text-xl tw-text-white tw-text-justify">{{ showtime.movie.overview }}</p>
+            <h2 class="tw-mt-5 md:tw-mt-10 tw-font-bold tw-text-2xl">Overview</h2>
+            <p class="tw-mt-2 tw-text-sm md:tw-text-xl tw-text-white tw-text-justify">{{ showtime.movie.overview }}</p>
             <h2 class="tw-mt-6 tw-font-bold tw-text-xl">Available languages : </h2>
             <div class="tw-flex tw-gap-2 tw-my-2">
                 <span>{{ showtime.movie.language }}</span>
