@@ -62,7 +62,7 @@ export default {
                     messages : ['Max beverage exceeded']
                 })
             }
-            this.loading = false
+            this.load = false
         }
     }
 }

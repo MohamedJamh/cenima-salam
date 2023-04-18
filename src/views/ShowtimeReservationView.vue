@@ -9,6 +9,7 @@
                         v-bind="components[componentIndex].props"
                         v-on="components[componentIndex].events"
                         ></component>
+                        <!-- <component class="tw-pt-40" is="showtimeTicket"></component> -->
                     </div>
                 </div>
             </div>
@@ -19,6 +20,7 @@ import axios from 'axios'
 import showtimeDetails from '@/components/Showtime/Details.vue'
 import showtimeTheater from '@/components/Showtime/Theater.vue'
 import showtimeBeverage from '@/components/Showtime/Beverage.vue'
+import showtimeTicket from '@/components/Showtime/Ticket.vue'
 
 export default {
     props : ['id'],
@@ -68,13 +70,23 @@ export default {
                 {
                     name : 'showtimeBeverage',
                     props : {
-                        beverages : 'hahah',
+                        beverages : null,
                     },
                     events:{
                         addBeverage : async function(selectedBeverage){
                             if(selectedBeverage.length) this.ticket.beverages = selectedBeverage
                             await this.getTicket()
+                            this.componentIndex = 3
                         }.bind(this)
+                    }
+                },
+                {
+                    name : 'showtimeTicket',
+                    props : {
+                        ticket : null
+                    },
+                    events:{
+                        
                     }
                 }
             ],
@@ -89,7 +101,8 @@ export default {
     components:{
         showtimeDetails,
         showtimeTheater,
-        showtimeBeverage
+        showtimeBeverage,
+        showtimeTicket
     },
     computed:{
         showtimeId(){
@@ -115,6 +128,7 @@ export default {
             let type = 'error'
             if(data.status){
                 type = 'success'
+                this.components[3].props.ticket = data.result
             }
             this.$store.dispatch('notify',{
                 type : type,
