@@ -72,7 +72,7 @@ export default {
                     },
                     events:{
                         addBeverage : async function(selectedBeverage){
-                            this.ticket.beverages = selectedBeverage
+                            if(selectedBeverage.length) this.ticket.beverages = selectedBeverage
                             await this.getTicket()
                         }.bind(this)
                     }
@@ -83,7 +83,6 @@ export default {
                 price : null,
                 user_id: 1, 
                 showtime_id: null,
-                beverages : null
             },
         }
     },

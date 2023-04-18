@@ -1,7 +1,7 @@
 <template >
     <div>
         <h1 class=" tw-text-base md:tw-text-4xl tw-font-semibold tw-text-center" >Choose Your Beverage</h1>
-        <div class=" tw-cursor-pointer tw-mt-10 tw-gap-x-5 tw-gap-y-5 tw-grid tw-grid-cols-2 sm:tw-grid-cols-3 lg:tw-grid-cols-4">
+        <div class=" tw-cursor-pointer tw-mt-10 tw-gap-x-5 tw-gap-y-5 tw-grid tw-grid-cols-2 sm:tw-grid-cols-3 lg:tw-grid-cols-4 xl:tw-grid-cols-5">
             <div
             v-for="beverage in beverages"
             class="tw-relative tw-rounded-xl tw-overflow-hidden">
