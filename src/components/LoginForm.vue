@@ -11,7 +11,7 @@
             </div>
             <div class="tw-flex tw-items-center tw-justify-between">
                 <button type="submit" class="tw-w-full tw-px-5 tw-py-3 tw-text-base tw-font-medium tw-text-center tw-text-white tw-bg-red-700 tw-rounded-lg hover:tw-bg-red-800 focus:tw-ring-4 focus:tw-ring-red-300 sm:tw-w-auto ">Login to cenima salam</button>
-                <a href="#" class="tw-ml-auto tw-text-sm tw-text-primary-700 hover:tw-underline dark:tw-text-primary-500">Lost Password?</a>
+                <a href="#" class="tw-ml-auto tw-text-sm hover:tw-underline tw-text-slate-400">Lost Password?</a>
             </div>
             <div class="tw-text-sm tw-font-medium tw-text-gray-500 dark:tw-text-gray-400">
                 Not registered? <a @click="this.$emit('switch')" class="tw-text-primary-700 hover:tw-underline dark:tw-text-primary-500">Create account</a>
@@ -53,7 +53,9 @@ export default {
             {
                 email : this.email,
                 password : this.password,
-            })
+            },{
+                withCredentials:true
+            },)
             console.log(data)
             if(data.status){
                 console.log(data.authorisation.token)

@@ -1,10 +1,10 @@
 <template >
-    <div>
+    <div class="tw-overflow-x-scroll">
         <section class="tw-flex tw-items-center tw-justify-between">
             <h2 class=" tw-text-3xl tw-font-semibold" >All Available Tickets</h2>
         </section>
-        <div class="tw-relative tw-overflow-x-auto tw-shadow-md sm:tw-rounded-lg tw-my-10">
-            <table class="tw-w-full tw-text-sm tw-text-left tw-text-gray-500 ">
+        <div class="tw-relative tw-w-full tw-overflow-x-scroll tw-shadow-md sm:tw-rounded-lg tw-my-10">
+            <table class="tw-w-full tw-text-sm tw-text-left tw-text-gray-500">
                 <thead class="tw-text-xs tw-text-gray-700 tw-uppercase tw-bg-gray-50 ">
                     <tr>
                         <th
@@ -23,7 +23,7 @@
                             {{ ticket.user }}
                         </th>
                         <th scope="row" class="tw-px-6 tw-py-4 tw-whitespace-nowrap ">
-                            {{ ticket.movie }}
+                            {{ ticket.movie.title }}
                         </th>
                         <th scope="row" class="tw-px-6 tw-py-4 tw-whitespace-nowrap ">
                             {{ ticket.theater }}

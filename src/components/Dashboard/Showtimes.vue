@@ -74,6 +74,7 @@
                                         single-line
                                     ></v-select>
                                 </v-col>
+                                {{ this.formRecord }}
                             </v-row>
                         </v-container>
                         </v-card-text>
@@ -182,6 +183,7 @@ export default {
         this.movies = await this.$store.dispatch('getAllMovies').then(data =>{
             return data
         })
+        console.log(this.showtimes)
     },
     data(){
         return {
@@ -209,7 +211,8 @@ export default {
     methods:{
         prepareToEdit(showtime){
             this.formRecord.id = showtime.id
-            this.formRecord.date = showtime.date
+            this.formRecord.date = showtime.dateString
+            this.formRecord.starts = showtime.startsString.substring(0, showtime.startsString.length - 3);
             this.formRecord.theater_id = showtime.theater.theater_id,
             this.formRecord.movie_id = null
             //casting time

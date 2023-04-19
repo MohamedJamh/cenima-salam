@@ -215,6 +215,7 @@
                                             <v-col cols="12" md="6" >
                                                 <v-text-field
                                                 v-model="formRecord.release_date"
+                                                type="date"
                                                 label="Release Date"
                                                 ></v-text-field>
                                             </v-col>
@@ -277,7 +278,7 @@
                             {{ movie.language }}
                         </td>
                         <td scope="row" class="tw-px-6 tw-py-4 tw-whitespace-nowrap ">
-                            {{ movie.runtime }}
+                            {{ movie.duration }}
                         </td>
                         <td class="tw-px-2 tw-py-4 tw-cursor-pointer">
                             <div @click="">
@@ -422,7 +423,7 @@ export default {
         }, 
         prepareToEdit(movie){
             this.formRecord = movie
-
+            this.formRecord.runtime = movie.duration
             let genresArray = []
             let companiesArray = []
             this.movieGenres.forEach(movieGenre => {

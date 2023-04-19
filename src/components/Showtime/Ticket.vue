@@ -48,6 +48,13 @@
                 <qrcode-vue :value="ticket.id" size="150" level="H" />
             </div>
         </div>
+        <div class="tw-text-center tw-py-4">
+            <router-link class="" to="/Showtimes">
+                <v-btn
+                color="primary"
+                >Go Back</v-btn>
+            </router-link>
+        </div>
     </div>
 </template>
 <script>
