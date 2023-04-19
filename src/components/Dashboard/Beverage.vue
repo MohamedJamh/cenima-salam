@@ -30,34 +30,47 @@
                                     md="6"
                                 >
                                     <v-text-field
+                                    hide-details
                                     v-model="formRecord.title"
                                     label="Title"
                                     ></v-text-field>
+                                    <validationError 
+                                    v-if="v$.formRecord.title.$error" 
+                                    :message="v$.formRecord.title.$errors[0].$message" />
                                 </v-col>
                                 <v-col
                                     cols="12"
                                     md="6"
                                 >
                                     <v-text-field
+                                    hide-details
                                     v-model="formRecord.description"
                                     label="Description"
                                     ></v-text-field>
+                                    <validationError 
+                                    v-if="v$.formRecord.description.$error" 
+                                    :message="v$.formRecord.description.$errors[0].$message" />
                                 </v-col>
                                 <v-col
                                     cols="12"
                                     md="6"
                                 >
                                     <v-text-field
+                                    hide-details
                                     v-model="formRecord.price"
                                     label="Price"
                                     type="number"
                                     ></v-text-field>
+                                    <validationError 
+                                    v-if="v$.formRecord.price.$error" 
+                                    :message="v$.formRecord.price.$errors[0].$message" />
                                 </v-col>
                                 <v-col
                                     cols="12"
                                     md="6"
                                 >
                                     <v-select
+                                        hide-details
                                         v-model="formRecord.beverage_type_id"
                                         :items="beverageTypes"
                                         item-title="name"
@@ -66,15 +79,22 @@
                                         :return-object="false"
                                         single-line
                                     ></v-select>
+                                    <validationError 
+                                    v-if="v$.formRecord.beverage_type_id.$error" 
+                                    :message="v$.formRecord.beverage_type_id.$errors[0].$message" />
                                 </v-col>
                                 <v-col
                                     cols="12"
                                 >
                                     <v-file-input
+                                    hide-details
                                     @change="pickImage($event)"
                                     accept="image/*"
                                     label="Beverage image"
                                     variant="underlined"></v-file-input>
+                                    <validationError 
+                                    v-if="v$.formRecord.image.$error" 
+                                    :message="v$.formRecord.image.$errors[0].$message" />
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -140,6 +160,10 @@
 </template>
 <script>
 import axios from 'axios'
+import { useVuelidate } from '@vuelidate/core'
+import { required, requiredIf } from '@vuelidate/validators'
+import validationError from '@/components/ValidationError.vue'
+
 export default {
     async created(){
         this.initialise()
@@ -148,6 +172,7 @@ export default {
             return data
         })
     },
+    setup: () => ({ v$: useVuelidate() }),
     data(){
         return {
             dialog : false,
@@ -155,14 +180,28 @@ export default {
             beverages : null,
             beverageTypes : null,
             formRecord : {
-                id: null,
-                title: null,
-                description: null,
-                price: null,
-                beverage_type_id: null,
-                image : null
+                id: '',
+                title: '',
+                description: '',
+                price: '',
+                beverage_type_id: '',
+                image : ''
             }
         }
+    },
+    validations(){
+        return {
+            formRecord : {
+                title: { required },
+                description: { required },
+                price: { required },
+                beverage_type_id: { required },
+                image : { requiredIf : requiredIf(this.dialogAction == 'add') }
+            }
+        }
+    },
+    components:{
+        validationError
     },
     methods:{
         async initialise(){
@@ -170,6 +209,13 @@ export default {
             .then(data =>{
                 return data
             })
+        },
+        async validateForm(){
+            const result = await this.v$.$validate()
+            if (!result) {
+                return false
+            }
+            return true
         },
         prepareToEdit(beverage){
             this.formRecord.id = beverage.id
@@ -182,20 +228,22 @@ export default {
             this.dialog = true
         },
         async updateBeverage(){
-            Object.keys(this.formRecord)
-            .forEach((property) => (this.formRecord[property] == null || this.formRecord[property] == '' ) && delete this.formRecord[property]);
+            if(await this.validateForm()){
+                Object.keys(this.formRecord)
+                .forEach((property) => (this.formRecord[property] == null || this.formRecord[property] == '' ) && delete this.formRecord[property]);
 
-            const { data } = await axios.patch(`beverages/${this.formRecord.id}`,this.formRecord)
-            let type = 'error'
-            if(data.status){
-                type = 'success'
-                this.initialise()
+                const { data } = await axios.patch(`beverages/${this.formRecord.id}`,this.formRecord)
+                let type = 'error'
+                if(data.status){
+                    type = 'success'
+                    this.initialise()
+                }
+                this.$store.dispatch('notify',{
+                    type : type,
+                    messages : [data.message]
+                })
+                this.close()
             }
-            this.$store.dispatch('notify',{
-                type : type,
-                messages : [data.message]
-            })
-            this.close()
         },
         async deleteBeverage(){
             const { data } = await axios.delete(`beverages/${this.formRecord.id}`)
@@ -211,17 +259,18 @@ export default {
             this.close()
         },
         async addBeverage(){
-            const { data } = await axios.post(`beverages`,this.formRecord)
-            let type = 'error'
-            if(data.status){
-                type = 'success'
-                this.initialise()
-            }
-            this.$store.dispatch('notify',{
-                type : type,
-                messages : [data.message]
-            })
-            this.close()
+            await this.validateForm()
+            // const { data } = await axios.post(`beverages`,this.formRecord)
+            // let type = 'error'
+            // if(data.status){
+            //     type = 'success'
+            //     this.initialise()
+            // }
+            // this.$store.dispatch('notify',{
+            //     type : type,
+            //     messages : [data.message]
+            // })
+            // this.close()
         },
         close(){
             this.formRecord.id = null

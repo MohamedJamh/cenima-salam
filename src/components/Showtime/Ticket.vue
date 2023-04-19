@@ -4,11 +4,11 @@
             <div class="">
                 <img class="tw-h-20 tw-mx-auto" src="@/assets/img/cenimasalam.png" alt="">
             </div>
+            <h2 class="tw-text-center tw-my-2 tw-font-bold tw-capitalize">{{ ticket.movie.title }}</h2>
             <div class="tw-overflow-hidden tw-max-h-[500px] tw-border-black/50 tw-border-y tw-border-dashed" >
                 <img :src="ticket.movie.images" alt="">
             </div>
             <div class="tw-px-4 tw-py-4">
-                <h2 class="tw-text-center tw-my-2 tw-font-bold tw-capitalize">{{ ticket.movie.title }}</h2>
                 <table class="tw-w-full tw-font-semibold tw-table-fixed">
                     <tr>
                         <td class=" tw-text-start tw-text-xs tw-w-52">Name</td>
@@ -45,7 +45,7 @@
                     <span class="tw-block">Scan</span>
                     <span class="tw-block">Me</span>
                 </div>
-                <qrcode-vue :value="ticket.id" size="150" level="H" />
+                <qrcode-vue :value="ticket.id + ''" size="150" level="H" />
             </div>
         </div>
         <div class="tw-text-center tw-py-4">

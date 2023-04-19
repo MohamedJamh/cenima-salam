@@ -50,7 +50,6 @@ export default {
         this.tickets = await this.getTickets().then(data=>{
             return data
         })
-        console.log(this.tickets)
     },
     data(){
         return {
