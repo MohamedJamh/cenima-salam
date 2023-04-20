@@ -212,9 +212,7 @@ export default {
         },
         async validateForm(){
             const result = await this.v$.$validate()
-            if (!result) {
-                return false
-            }
+            if (!result) return false
             return true
         },
         prepareToEdit(beverage){
@@ -259,26 +257,27 @@ export default {
             this.close()
         },
         async addBeverage(){
-            await this.validateForm()
-            // const { data } = await axios.post(`beverages`,this.formRecord)
-            // let type = 'error'
-            // if(data.status){
-            //     type = 'success'
-            //     this.initialise()
-            // }
-            // this.$store.dispatch('notify',{
-            //     type : type,
-            //     messages : [data.message]
-            // })
-            // this.close()
+            if(await this.validateForm()){
+                const { data } = await axios.post(`beverages`,this.formRecord)
+                let type = 'error'
+                if(data.status){
+                    type = 'success'
+                    this.initialise()
+                }
+                this.$store.dispatch('notify',{
+                    type : type,
+                    messages : [data.message]
+                })
+                this.close()
+            }
         },
         close(){
-            this.formRecord.id = null
-            this.formRecord.title = null
-            this.formRecord.description = null
-            this.formRecord.price = null
-            this.formRecord.beverage_type_id = null
-
+            this.formRecord.id = ''
+            this.formRecord.title = ''
+            this.formRecord.description = ''
+            this.formRecord.price = ''
+            this.formRecord.beverage_type_id = ''
+            this.v$.$reset()
             this.dialogAction = 'add'
             this.dialog = false
         },

@@ -23,17 +23,21 @@
                         </v-card-title>
                         <v-card-text>
                         <v-container>
-                            <v-row>
-                            
-                            <v-col
-                                cols="12"
-                            >
-                                <v-text-field
-                                v-model="formRecord.name"
-                                label="name"
-                                ></v-text-field>
-                            </v-col>
-                            </v-row>
+                                <v-row>
+                                
+                                <v-col
+                                    cols="12"
+                                >
+                                    <v-text-field
+                                    hide-details
+                                    v-model="formRecord.name"
+                                    label="name"
+                                    ></v-text-field>
+                                    <validationError 
+                                    v-if="v$.formRecord.name.$error" 
+                                    :message="v$.formRecord.name.$errors[0].$message" />
+                                </v-col>
+                                </v-row>
                         </v-container>
                         </v-card-text>
                         <v-card-actions>
@@ -116,10 +120,15 @@
 </template>
 <script>
 import axios from 'axios'
+import { useVuelidate } from '@vuelidate/core'
+import { required, requiredIf } from '@vuelidate/validators'
+import validationError from '@/components/ValidationError.vue'
+
 export default {
     async created(){
         this.initialise()
     },
+    setup: () => ({ v$: useVuelidate() }),
     data(){
         return {
             dialog : false,
@@ -129,8 +138,18 @@ export default {
                 'Name',
             ],
             formRecord : {
-                id : null,
-                name : null
+                id : '',
+                name : ''
+            }
+        }
+    },
+    components:{
+        validationError
+    },
+    validations(){
+        return {
+            formRecord : {
+                name: { required },
             }
         }
     },
@@ -141,6 +160,11 @@ export default {
                 return data
             })
         },
+        async validateForm(){
+            const result = await this.v$.$validate()
+            if (!result) return false
+            return true
+        },
         prepareToEdit(type){
             this.formRecord.name = type.name
             this.formRecord.id = type.id
@@ -148,42 +172,25 @@ export default {
             this.dialog = true
         },
         async updateType(){
-            const { data } = await axios.patch(`beverage-types/${this.formRecord.id}`,{
-                name : this.formRecord.name
-            })
-            let type = null
-            if(data.status){
-                type = 'success'
-                this.initialise()
-            }else{
-                type = 'error'
+            if(await this.validateForm()){
+                const { data } = await axios.patch(`beverage-types/${this.formRecord.id}`,{
+                    name : this.formRecord.name
+                })
+                let type = 'error'
+                if(data.status){
+                    type = 'success'
+                    this.initialise()
+                }
+                this.$store.dispatch('notify',{
+                    type : type,
+                    messages : [data.message]
+                })
+                this.close()
             }
-            this.$store.dispatch('notify',{
-                type : type,
-                messages : [data.message]
-            })
-            this.dialog = false
         },
         async deleteType(id){
             this.formRecord.id = id
             const { data } = await axios.delete(`beverage-types/${this.formRecord.id}`)
-
-            let type = null
-            if(data.status){
-                type = 'success'
-                this.initialise()
-            }else{
-                type = 'error'
-            }
-            this.$store.dispatch('notify',{
-                type : type,
-                messages : [data.message]
-            })
-        },
-        async addType(){
-            const { data } = await axios.post(`beverage-types`,{
-                name : this.formRecord.name
-            })
 
             let type = 'error'
             if(data.status){
@@ -194,11 +201,28 @@ export default {
                 type : type,
                 messages : [data.message]
             })
-            this.dialog = false
+        },
+        async addType(){
+            if(await this.validateForm()){
+                const { data } = await axios.post(`beverage-types`,{
+                    name : this.formRecord.name
+                })
+                let type = 'error'
+                if(data.status){
+                    type = 'success'
+                    this.initialise()
+                }
+                this.$store.dispatch('notify',{
+                    type : type,
+                    messages : [data.message]
+                })
+                this.close()
+            }
         },
         close(){
-            this.formRecord.name = null
-            this.formRecord.id = null
+            this.formRecord.name = ''
+            this.formRecord.id = ''
+            this.v$.$reset()
             this.dialogAction = 'add'
             this.dialog = false
         }

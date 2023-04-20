@@ -30,20 +30,29 @@
                                     md="6"
                                 >
                                     <v-text-field
+                                    hide-details
                                     v-model="formRecord.date"
                                     label="Date"
                                     type="Date"
+                                    :min="new Date().toISOString()"
                                     ></v-text-field>
+                                    <validationError 
+                                    v-if="v$.formRecord.date.$error" 
+                                    :message="v$.formRecord.date.$errors[0].$message" />
                                 </v-col>
                                 <v-col
                                     cols="12"
                                     md="6"
                                 >
                                     <v-text-field
+                                    hide-details
                                     v-model="formRecord.starts"
                                     label="Start (time)"
                                     type="time"
                                     ></v-text-field>
+                                    <validationError 
+                                    v-if="v$.formRecord.starts.$error" 
+                                    :message="v$.formRecord.starts.$errors[0].$message" />
                                 </v-col>
                                 <v-col
                                     v-if="dialogAction == 'add'"
@@ -51,6 +60,7 @@
                                     md="6"
                                 >
                                     <v-select
+                                        hide-details
                                         v-model="formRecord.movie_id"
                                         :items="movies"
                                         item-title="title"
@@ -59,12 +69,16 @@
                                         :return-object="false"
                                         single-line
                                     ></v-select>
+                                    <validationError 
+                                    v-if="v$.formRecord.movie_id.$error" 
+                                    :message="v$.formRecord.movie_id.$errors[0].$message" />
                                 </v-col>
                                 <v-col
                                     cols="12"
                                     md="6"
                                 >
                                     <v-select
+                                        hide-details
                                         v-model="formRecord.theater_id"
                                         :items="theaters"
                                         item-title="name"
@@ -73,8 +87,10 @@
                                         :return-object="false"
                                         single-line
                                     ></v-select>
+                                    <validationError 
+                                    v-if="v$.formRecord.theater_id.$error" 
+                                    :message="v$.formRecord.theater_id.$errors[0].$message" />
                                 </v-col>
-                                {{ this.formRecord }}
                             </v-row>
                         </v-container>
                         </v-card-text>
@@ -174,6 +190,10 @@
 </template>
 <script>
 import axios from 'axios'
+import { useVuelidate } from '@vuelidate/core'
+import { required, requiredIf } from '@vuelidate/validators'
+import validationError from '@/components/ValidationError.vue'
+
 export default {
     async created(){
         this.initialise()
@@ -183,8 +203,8 @@ export default {
         this.movies = await this.$store.dispatch('getAllMovies').then(data =>{
             return data
         })
-        console.log(this.showtimes)
     },
+    setup: () => ({ v$: useVuelidate() }),
     data(){
         return {
             dialog : false,
@@ -208,45 +228,73 @@ export default {
             }
         }
     },
+    validations(){
+        return {
+            formRecord : {
+                date: { required },
+                starts: { required },
+                movie_id: { requiredIf : requiredIf( this.dialogAction == 'add' ) },
+                theater_id : { required }
+            }
+        }
+    },
+    components:{
+        validationError
+    },
     methods:{
+        async initialise(){
+            this.showtimes = await this.$store.dispatch('getShowtimes').then(data =>{
+                return data
+            })
+        },
+        async validateForm(){
+            const result = await this.v$.$validate()
+            if (!result) return false
+            return true
+        },
         prepareToEdit(showtime){
             this.formRecord.id = showtime.id
             this.formRecord.date = showtime.dateString
             this.formRecord.starts = showtime.startsString.substring(0, showtime.startsString.length - 3);
             this.formRecord.theater_id = showtime.theater.theater_id,
             this.formRecord.movie_id = null
-            //casting time
+            
             this.dialogAction = 'update'
             this.dialog = true
         },
         async addShowtime(){
-            const { data } = await axios.post(`showtimes`,this.formRecord)
-            let type = 'error'
-            if(data.status){
-                type = 'success'
-                this.initialise()
+            if(await this.validateForm()){
+
+                const { data } = await axios.post(`showtimes`,this.formRecord)
+                let type = 'error'
+                if(data.status){
+                    type = 'success'
+                    this.initialise()
+                }
+                this.$store.dispatch('notify',{
+                    type : type,
+                    messages : [data.message]
+                })
+                this.close()
             }
-            this.$store.dispatch('notify',{
-                type : type,
-                messages : [data.message]
-            })
-            this.dialog = false
         },
         async updateShowtime(){
-            Object.keys(this.formRecord)
-            .forEach((property) => (this.formRecord[property] == null || this.formRecord[property] == '' ) && delete this.formRecord[property]);
-
-            const { data } = await axios.patch(`showtimes/${this.formRecord.id}`,this.formRecord)
-            let type = 'error'
-            if(data.status){
-                type = 'success'
-                this.initialise()
+            if(await this.validateForm()){
+                Object.keys(this.formRecord)
+                .forEach((property) => (this.formRecord[property] == null || this.formRecord[property] == '' ) && delete this.formRecord[property]);
+                
+                const { data } = await axios.patch(`showtimes/${this.formRecord.id}`,this.formRecord)
+                let type = 'error'
+                if(data.status){
+                    type = 'success'
+                    this.initialise()
+                }
+                this.$store.dispatch('notify',{
+                    type : type,
+                    messages : [data.message]
+                })
+                this.close()
             }
-            this.$store.dispatch('notify',{
-                type : type,
-                messages : [data.message]
-            })
-            this.dialog = false
         },
         async deleteShowtime(showtimeId){
             const { data } = await axios.delete(`showtimes/${showtimeId}`)
@@ -261,21 +309,16 @@ export default {
             })
             this.dialog = false
         },
-        async initialise(){
-            this.showtimes = await this.$store.dispatch('getShowtimes').then(data =>{
-                return data
-            })
-        },
-        
         close(){
-            this.formRecord.date = null
-            this.formRecord.starts = null
+            this.formRecord.date = ''
+            this.formRecord.starts = ''
             this.formRecord.movie_id = 1,
             this.formRecord.theater_id = 1,
-
+            this.v$.$reset()
             this.dialogAction = 'add'
             this.dialog = false
         }
+        
     }
     
 }

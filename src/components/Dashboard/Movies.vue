@@ -306,10 +306,13 @@
 </template>
 <script>
 import axios from 'axios';
+import { useVuelidate } from '@vuelidate/core'
+import { required, requiredIf } from '@vuelidate/validators'
+import validationError from '@/components/ValidationError.vue'
 
 export default {
     components:{
-        
+        validationError
     },
     async created(){
         this.initialise()
@@ -320,6 +323,7 @@ export default {
             return data
         })
     },
+    setup: () => ({ v$: useVuelidate() }),
     data(){
         return {
             ignoreImagesOnUpdate : false,
@@ -341,10 +345,6 @@ export default {
                 {title:'Popular',value:'popular'},
                 {title:'Upcoming',value:'upcoming'}
             ],
-            onlinePoster : null,
-            onlineBackdrop : null,
-            localPoster : null,
-            localBackdrop : null,
             
             formRecord:{
                 title : '',
@@ -371,11 +371,34 @@ export default {
             }
         }
     },
+    validations(){
+        return {
+            formRecord : {
+                title : {required},
+                tagline : {required},
+                overview : {required},
+                release_date : {required},
+                language : {required},
+                runtime : {required},
+                rate : {required},
+                budget : {required},
+                status : {required},
+                genres : {required},
+                production_companies : {required},
+                images : {required}
+            }
+        }
+    },
     methods:{
         async initialise(){
             this.movies = await this.$store.dispatch('getAllMovies').then(data => {
                 return data
             })
+        },
+        async validateForm(){
+            const result = await this.v$.$validate()
+            if (!result) return false
+            return true
         },
         async addMovie(){
 

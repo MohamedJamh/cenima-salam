@@ -30,15 +30,20 @@
                                     md="6"
                                 >
                                     <v-text-field
+                                    hide-details
                                     v-model="formRecord.name"
                                     label="name"
                                     ></v-text-field>
+                                    <validationError 
+                                    v-if="v$.formRecord.name.$error" 
+                                    :message="v$.formRecord.name.$errors[0].$message" />
                                 </v-col>    
                                 <v-col
                                     cols="12"
                                     md="6"
                                 >
                                     <v-select
+                                        hide-details
                                         v-model="formRecord.schema_id"
                                         :items="schemas"
                                         item-title="name"
@@ -47,6 +52,9 @@
                                         :return-object="false"
                                         single-line
                                     ></v-select>
+                                    <validationError 
+                                    v-if="v$.formRecord.schema_id.$error" 
+                                    :message="v$.formRecord.schema_id.$errors[0].$message" />
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -152,6 +160,9 @@
 </template>
 <script>
 import axios from 'axios'
+import { useVuelidate } from '@vuelidate/core'
+import { required, requiredIf } from '@vuelidate/validators'
+import validationError from '@/components/ValidationError.vue'
 export default {
     async created(){
         this.initialise()
@@ -160,6 +171,7 @@ export default {
             return data
         })
     },
+    setup: () => ({ v$: useVuelidate() }),
     data(){
         return {
             dialog : false,
@@ -179,12 +191,28 @@ export default {
             }
         }
     },
+    validations(){
+        return {
+            formRecord : {
+                name: { required },
+                schema_id: { required }
+            }
+        }
+    },
+    components:{
+        validationError
+    },
     methods:{
         async initialise(){
             this.theaters = await this.$store.dispatch('getTheaters')
             .then(data =>{
                 return data
             })
+        },
+        async validateForm(){
+            const result = await this.v$.$validate()
+            if (!result) return false
+            return true
         },
         prepareToEdit(theater){
             this.formRecord.id = theater.id
@@ -194,30 +222,27 @@ export default {
             this.dialog = true
         },
         async updateTheater(){
-            const { data } = await axios.patch(`theaters/${this.formRecord.id}`,this.formRecord)
-            let type = null
-            if(data.status){
-                type = 'success'
-                this.initialise()
-            }else{
-                type = 'error'
+            if(await this.validateForm()){
+                const { data } = await axios.patch(`theaters/${this.formRecord.id}`,this.formRecord)
+                let type = 'error'
+                if(data.status){
+                    type = 'success'
+                    this.initialise()
+                }
+                this.$store.dispatch('notify',{
+                    type : type,
+                    messages : [data.message]
+                })
+                this.close()
             }
-            this.$store.dispatch('notify',{
-                type : type,
-                messages : [data.message]
-            })
-            this.dialog = false
         },
         async deleteTheater(id){
-            this.formRecord.id = id
-            const { data } = await axios.delete(`theaters/${this.formRecord.id}`)
+            const { data } = await axios.delete(`theaters/${id}`)
 
-            let type = null
+            let type = 'error'
             if(data.status){
                 type = 'success'
                 this.initialise()
-            }else{
-                type = 'error'
             }
             this.$store.dispatch('notify',{
                 type : type,
@@ -225,25 +250,25 @@ export default {
             })
         },
         async addTheater(){
-            const { data } = await axios.post(`theaters`,this.formRecord)
-
-            let type = null
-            if(data.status){
-                type = 'success'
-                this.initialise()
-            }else{
-                type = 'error'
+            if(await this.validateForm()){
+                const { data } = await axios.post(`theaters`,this.formRecord)
+                let type = 'error'
+                if(data.status){
+                    type = 'success'
+                    this.initialise()
+                }
+                this.$store.dispatch('notify',{
+                    type : type,
+                    messages : [data.message]
+                })
+                this.close()
             }
-            this.$store.dispatch('notify',{
-                type : type,
-                messages : [data.message]
-            })
-            this.dialog = false
         },
         close(){
-            this.formRecord.id = null
-            this.formRecord.name = null
+            this.formRecord.id = ''
+            this.formRecord.name = ''
             this.formRecord.schema_id = 1
+            this.v$.$reset()
             this.dialogAction = 'add'
             this.dialog = false
         }
