@@ -10,12 +10,23 @@ import Dashboard from '../views/DashboardView.vue';
 
 const routes = [
     { path: "/",component: Auth},
-    { path: "/Dashboard",component: Dashboard},
     { path: "/Home",component: Home},
     { path: "/Popular",component: Popular},
     { path: "/Showtimes",component: Showtimes},
     { path: "/Showtimes/:id",component: ShowtimesDetails},
     { path: "/Upcoming",component: Upcoming},
+    { 
+        path: "/Dashboard",
+        component: Dashboard,
+        // beforeEnter: (to, from, next) => {
+        //     // Your navigation guard logic goes here
+        //     if ( 5 != 5 ) {
+        //       next();
+        //     } else {
+        //       next({ path: '/home'});
+        //     }
+        // }
+    },
 ]
 
 const router = createRouter({

@@ -1,9 +1,11 @@
 <template>
     <div class="tw-flex tw-min-h-screen xl:tw-max-w-screen-2xl xl:tw-mx-auto xl:tw-border-x-2 xl:tw-border-gray-200 ">
         <aside class="tw-w-1/6 tw-py-10 tw-pl-10 tw-min-w-min tw-border-r tw-border-gray-300  tw-hidden xl:tw-block">
-            <div class="">
-                <img class="tw-h-20" src="@/assets/img/cenimasalam.png" alt="">
-            </div> 
+            <router-link to="/home">
+                <div class="">
+                    <img class="tw-h-20" src="@/assets/img/cenimasalam.png" alt="">
+                </div> 
+            </router-link>
             <div class="tw-mt-12 tw-flex tw-flex-col tw-gap-y-4 tw-text-gray-500 tw-fill-gray-500 tw-text-sm">
                 <div class="tw-text-gray-400/70 tw-font-medium tw-uppercase">Menu</div>
                 <a
@@ -18,6 +20,15 @@
                       :icon="'mdi-'+ nav.icon"
                       size="large"></v-icon>
                     <span>{{ nav.name }} </span>
+                </a>
+                <a
+                  class="tw-flex tw-items-center tw-space-x-2 tw-py-1  tw-pr-20 hover:tw-border-r-4  hover:tw-border-r-red-500"
+                  @click.prevent="this.$store.dispatch('logout')"
+                  href="#">
+                    <v-icon
+                      icon="mdi-logout"
+                      size="large"></v-icon>
+                    <span>logout</span>
                 </a>
             </div>
         </aside>
@@ -63,7 +74,6 @@ export default {
                 { name : 'Beverages' , icon : 'food', component: 'beverage' },
                 { name : 'Beverage Types' , icon : 'cookie', component: 'beverageTypes'  },
                 { name : 'Settings' , icon : 'cog' },
-                { name : 'Logout' , icon : 'logout' },
             ]
         }
     },

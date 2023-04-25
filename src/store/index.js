@@ -6,7 +6,6 @@ export default createStore({
     state () {
         return {
             //auth
-            token : null,
             user : null,
             //notification
             showNotification : false,
@@ -18,11 +17,11 @@ export default createStore({
     },
     mutations: {
         //auth
-        storeToken(state, JwtToken){
-            state.token = JwtToken
+        storeUser(state, user){
+            state.user = user
         },
-        destroyToken(state){
-            state.token = null
+        destroyUser(state){
+            state.user = null
         },
         //notification
         trrigerNotification(state,paylod){
@@ -34,14 +33,28 @@ export default createStore({
     },
     actions: {
         //auth
-        logout({ commit }){
-            commit('destroyToken')
-            router.push('/Login')
-        },
-        loggedIn({dispatch , state}){
-            if(!state.token){
-                dispatch('logout')
+        async handelLogin({commit,dispatch},credentials){
+            const {data} = await axios.post('login',credentials)
+            if(data.status){
+                localStorage.setItem('token',data.authorisation.token)
+                commit('storeUser',data.user)
+                if(data.user.roles.includes('admin')){
+                    router.push('/dashboard')
+                }else{
+                    router.push('/home')
+                }
+                
+            }else{
+                dispatch('notify',{
+                    type : 'error',
+                    messages : ['Email or Password is incorrect']
+                })
             }
+        },
+        logout({ commit }){
+            commit('destroyUser')
+            localStorage.removeItem('token')
+            router.push('/')
         },
         // movies
         async getPopularMovies(){
@@ -121,9 +134,6 @@ export default createStore({
         getUser(state){
             return state.user
         },
-        getToken(state){
-            return state.token
-        }
     },
     modules:{
 

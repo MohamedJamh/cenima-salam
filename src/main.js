@@ -12,6 +12,6 @@ loadFonts()
 
 createApp(App)
   .use(vuetify)
-  .use(router)
   .use(vuex)
+  .use(router)
   .mount('#app')

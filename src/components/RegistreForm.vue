@@ -20,7 +20,12 @@
                 <div class="tw-text-sm tw-font-medium tw-text-gray-500 dark:tw-text-gray-400">
                     Already have an account? <a href="#" @click="this.$emit('switch')" class="tw-text-primary-700 hover:tw-underline dark:tw-text-primary-500">Login here</a>
                 </div>
-                <button type="submit" class="tw-w-full tw-px-5 tw-py-3 tw-text-base tw-font-medium tw-text-center tw-text-white tw-bg-red-700 tw-rounded-lg hover:tw-bg-red-800 focus:tw-ring-4 focus:tw-ring-red-300 sm:tw-w-auto float-left">Create account</button>
+                <v-btn
+                :loading="loading"
+                type="submit"
+                height="50"
+                class="tw-w-full tw-px-5 tw-text-base tw-font-medium tw-text-center tw-text-white tw-bg-red-700 tw-rounded-lg hover:tw-bg-red-800 focus:tw-ring-4 focus:tw-ring-red-300 sm:tw-w-auto float-left"
+                >Create account</v-btn>
             </div>
             
         </form>
@@ -31,6 +36,7 @@ import axios from 'axios'
 
 export default {
     data: () => ({
+        loading : false,
         name : '',
         email: '',
         password : '',
@@ -38,20 +44,31 @@ export default {
     }),
     methods:{
         async handelRegister(){
-            await axios.post('register',
-            {
-                name : this.name,
-                email : this.email,
-                password : this.password,
-            })
-            .then(response => {
-                // localStorage.setItem('token',response.data.authorisation.token)
-                // this.$router.push('/')
-            })
-            .catch(error => {
-                console.log(error.response.data.errors)
-            })
-            
+            this.loading = true
+            try {
+                const { data } = await axios.post('register',
+                {
+                    name : this.name,
+                    email : this.email,
+                    password : this.password,
+                })
+                this.$store.dispatch('notify',{
+                    type : 'success',
+                    messages : ['Your Account has been created successfully']
+                })
+                this.$store.commit('storeUser',data.user)
+                if(data.user.roles.includes('admin')){
+                    this.$router.push('/dashboard')
+                }else{
+                    this.$router.push('/home')
+                }
+            } catch (err) {
+                this.$store.dispatch('notify',{
+                    type : 'error',
+                    messages : [err.response.data.message]
+                })
+            }
+            this.loading = false
         }
     }
 }
