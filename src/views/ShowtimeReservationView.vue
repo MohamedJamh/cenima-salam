@@ -41,12 +41,17 @@ export default {
                     },
                     events : {
                         book : async function() {
-                            this.components[1].props.theater = await this.getTheater().then(data => {
-                                return data
-                            })
-                            this.components[1].props.tickets = this.showtime.tickets
-                            this.ticket.showtime_id = this.showtimeId
-                            this.componentIndex = 1
+                            if(this.$store.getters.getUser){
+                                this.components[1].props.theater = await this.getTheater().then(data => {
+                                    return data
+                                })
+                                this.components[1].props.tickets = this.showtime.tickets
+                                this.ticket.showtime_id = this.showtimeId
+                                this.ticket.user_id = this.$store.getters.getUser.id
+                                this.componentIndex = 1
+                            }else{
+                                this.$router.push('/')
+                            }
                         }.bind(this)
                     }
                 },
@@ -75,6 +80,7 @@ export default {
                     events:{
                         addBeverage : async function(selectedBeverage){
                             if(selectedBeverage.length) this.ticket.beverages = selectedBeverage
+                            // this.components[3].props.
                             await this.getTicket()
                             this.componentIndex = 3
                         }.bind(this)
@@ -93,7 +99,7 @@ export default {
             ticket : {
                 seats : null,
                 price : null,
-                user_id: 1, 
+                user_id: null, 
                 showtime_id: null,
             },
         }

@@ -18,14 +18,6 @@ const routes = [
     { 
         path: "/Dashboard",
         component: Dashboard,
-        // beforeEnter: (to, from, next) => {
-        //     // Your navigation guard logic goes here
-        //     if ( 5 != 5 ) {
-        //       next();
-        //     } else {
-        //       next({ path: '/home'});
-        //     }
-        // }
     },
 ]
 

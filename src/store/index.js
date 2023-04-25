@@ -51,8 +51,9 @@ export default createStore({
                 })
             }
         },
-        logout({ commit }){
+        async logout({ commit }){
             commit('destroyUser')
+            await axios.post('logout')
             localStorage.removeItem('token')
             router.push('/')
         },

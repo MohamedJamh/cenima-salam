@@ -28,7 +28,7 @@
                     <tr>
                         <td class="tw-text-xl tw-font-bold">{{ ticket.theater }}</td>
                         <td class="tw-text-xl tw-font-bold">{{ ticket.seats[0] }}</td>
-                        <td class="tw-text-xl tw-font-bold">{{ ticket.seats[1] }}</td>
+                        <td class="tw-text-xl tw-font-bold">{{ ticket.seats[1] + '' + ticket.seats[2] }}</td>
                     </tr>
                     <tr>
                         <td class=" tw-text-start tw-text-xs  tw-pt-3">Date</td>
@@ -63,7 +63,7 @@ export default {
     name : 'showtimeTicket',
     props:['ticket'],
     created(){
-        console.log(this.ticket)
+        
     },
     components:{
         QrcodeVue
