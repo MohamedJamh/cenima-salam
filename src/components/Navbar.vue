@@ -1,7 +1,10 @@
 <template >
     <div>
         <nav class="tw-flex tw-justify-between tw-space-x-6 tw-text-white tw-font-medium">
-            <div class="tw-flex tw-space-x-6">
+            <div class="tw-flex tw-items-center tw-space-x-6">
+                <div class="">
+                    <img src="@/assets/img/cenimaslamawhite.png" class="tw-h-14" alt="FlowBite Logo">
+                </div>
                 <router-link 
                 v-for="link in links"
                 :to="link.path"
@@ -17,14 +20,14 @@
                     <a href="#" class="hover:tw-text-gray-700 dark:hover:tw-text-white">Dashboard</a>
                 </router-link>
                 <button
-                v-if="this.$store.getters.getUser"
-                class="tw-px-8 tw-py-1 tw-text-lg tw-font-medium tw-text-center tw-text-white tw-bg-red-700 tw-rounded-lg hover:tw-bg-red-800 focus:tw-ring-4 focus:tw-ring-red-300"
-                @click="this.$store.dispatch('logout')"
+                    v-if="this.$store.getters.getUser"
+                    class="tw-px-8 tw-py-1 tw-text-lg tw-font-medium tw-text-center tw-text-white tw-bg-red-700 tw-rounded-lg hover:tw-bg-red-800 focus:tw-ring-4 focus:tw-ring-red-300"
+                    @click="this.$store.dispatch('logout')"
                 >logout</button>
                 <button
-                v-else
-                class="tw-px-8 tw-py-1 tw-text-lg tw-font-medium tw-text-center tw-text-white tw-bg-red-700 tw-rounded-lg hover:tw-bg-red-800 focus:tw-ring-4 focus:tw-ring-red-300"
-                @click="this.$router.push('/')"
+                    v-else
+                    class="tw-px-8 tw-py-1 tw-text-lg tw-font-medium tw-text-center tw-text-white tw-bg-red-700 tw-rounded-lg hover:tw-bg-red-800 focus:tw-ring-4 focus:tw-ring-red-300"
+                    @click="this.$router.push('/')"
                 >log in</button>
             </div>
         </nav>

@@ -402,7 +402,11 @@ export default {
         },
         async addMovie(){
 
-            const { data } = await axios.post(`movies`,this.formRecord)
+            const { data } = await axios.post(`movies`,this.formRecord,{
+                headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             let type = 'error'
             if(data.status){
                 type = 'success'
@@ -419,7 +423,11 @@ export default {
             Object.keys(this.formRecord)
             .forEach((property) => (this.formRecord[property] == null || this.formRecord[property] == '' ) && delete this.formRecord[property]);
             
-            const { data } = await axios.put(`movies/${this.formRecord.id}`,this.formRecord)
+            const { data } = await axios.put(`movies/${this.formRecord.id}`,this.formRecord,{
+                headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             let type = 'error'
             if(data.status){
                 type = 'success'
@@ -432,7 +440,11 @@ export default {
             this.close()
         },
         async deleteMovie(movieId){
-            const { data } = await axios.delete(`movies/${movieId}`)
+            const { data } = await axios.delete(`movies/${movieId}`,{
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             let type = 'error'
             if(data.status){
                 type = 'success'

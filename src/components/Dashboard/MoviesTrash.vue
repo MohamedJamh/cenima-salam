@@ -112,13 +112,21 @@ export default {
     },
     methods:{
         async getTrashedMovies(){
-            const {data} = await axios.get('movies/trashed')
+            const {data} = await axios.get('movies/trashed',{
+                headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             if(data.status){
                 this.trash = data.result
             }
         },
         async restoreMovie(movieId){
-            const {data} = await axios.get(`movies/trashed/${movieId}/restore`)
+            const {data} = await axios.get(`movies/trashed/${movieId}/restore`,{
+                headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             let type = 'error'
             if(data.status){
                 type = 'success'
@@ -131,7 +139,11 @@ export default {
         },
         async forceDeleteMovie(movieId){
 
-            const {data} = await axios.delete(`movies/trashed/${movieId}/delete`)
+            const {data} = await axios.delete(`movies/trashed/${movieId}/delete`,{
+                headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             let type = 'error'
             if(data.status){
                 type = 'success'
@@ -145,7 +157,11 @@ export default {
             })
         },
         async restoreAll(){
-            const {data} = await axios.get(`movies/trashed/restore`)
+            const {data} = await axios.get(`movies/trashed/restore`,{
+                headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             let type = 'error'
             if(data.status){
                 type = 'success'
@@ -157,7 +173,11 @@ export default {
             })
         },
         async forceDeleteAllMovies(){
-            const {data} = await axios.delete(`movies/trashed/delete`)
+            const {data} = await axios.delete(`movies/trashed/delete`,{
+                headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             let type = 'error'
             if(data.status){
                 type = 'success'

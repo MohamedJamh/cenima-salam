@@ -166,7 +166,7 @@ import validationError from '@/components/ValidationError.vue'
 
 export default {
     async created(){
-        this.initialise()
+        await this.initialise()
         this.beverageTypes = await this.$store.dispatch('getBeverageTypes')
         .then(data =>{
             return data
@@ -230,7 +230,11 @@ export default {
                 Object.keys(this.formRecord)
                 .forEach((property) => (this.formRecord[property] == null || this.formRecord[property] == '' ) && delete this.formRecord[property]);
 
-                const { data } = await axios.patch(`beverages/${this.formRecord.id}`,this.formRecord)
+                const { data } = await axios.patch(`beverages/${this.formRecord.id}`,this.formRecord,{
+                    headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                    }
+                })
                 let type = 'error'
                 if(data.status){
                     type = 'success'
@@ -244,7 +248,11 @@ export default {
             }
         },
         async deleteBeverage(){
-            const { data } = await axios.delete(`beverages/${this.formRecord.id}`)
+            const { data } = await axios.delete(`beverages/${this.formRecord.id}`,{
+                headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             let type = null
             if(data.status){
                 type = 'success'
@@ -258,7 +266,11 @@ export default {
         },
         async addBeverage(){
             if(await this.validateForm()){
-                const { data } = await axios.post(`beverages`,this.formRecord)
+                const { data } = await axios.post(`beverages`,this.formRecord,{
+                    headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                    }
+                })
                 let type = 'error'
                 if(data.status){
                     type = 'success'

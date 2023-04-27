@@ -59,7 +59,7 @@
 </template>
 <script>
 import QrcodeVue from 'qrcode.vue'
-export default {
+export default{
     name : 'showtimeTicket',
     props:['ticket'],
     created(){

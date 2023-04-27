@@ -175,6 +175,10 @@ export default {
             if(await this.validateForm()){
                 const { data } = await axios.patch(`beverage-types/${this.formRecord.id}`,{
                     name : this.formRecord.name
+                },{
+                    headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                    }
                 })
                 let type = 'error'
                 if(data.status){
@@ -190,7 +194,11 @@ export default {
         },
         async deleteType(id){
             this.formRecord.id = id
-            const { data } = await axios.delete(`beverage-types/${this.formRecord.id}`)
+            const { data } = await axios.delete(`beverage-types/${this.formRecord.id}`,{
+                headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
 
             let type = 'error'
             if(data.status){
@@ -206,6 +214,10 @@ export default {
             if(await this.validateForm()){
                 const { data } = await axios.post(`beverage-types`,{
                     name : this.formRecord.name
+                },{
+                    headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                    }
                 })
                 let type = 'error'
                 if(data.status){

@@ -265,7 +265,11 @@ export default {
         async addShowtime(){
             if(await this.validateForm()){
 
-                const { data } = await axios.post(`showtimes`,this.formRecord)
+                const { data } = await axios.post(`showtimes`,this.formRecord,{
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                    }
+                })
                 let type = 'error'
                 if(data.status){
                     type = 'success'
@@ -283,7 +287,11 @@ export default {
                 Object.keys(this.formRecord)
                 .forEach((property) => (this.formRecord[property] == null || this.formRecord[property] == '' ) && delete this.formRecord[property]);
                 
-                const { data } = await axios.patch(`showtimes/${this.formRecord.id}`,this.formRecord)
+                const { data } = await axios.patch(`showtimes/${this.formRecord.id}`,this.formRecord,{
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                    }
+                })
                 let type = 'error'
                 if(data.status){
                     type = 'success'
@@ -297,7 +305,11 @@ export default {
             }
         },
         async deleteShowtime(showtimeId){
-            const { data } = await axios.delete(`showtimes/${showtimeId}`)
+            const { data } = await axios.delete(`showtimes/${showtimeId}`,{
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             let type = 'error'
             if(data.status){
                 type = 'success'

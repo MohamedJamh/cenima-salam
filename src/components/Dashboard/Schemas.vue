@@ -14,7 +14,7 @@
               >
                 <td
                 class="tw-w-8 tw-border-r-2"
-                :class="'tw-border-r-' + rowClassification(row.row_label)"
+                :class="rowClassification(row.row_label)"
                 > <small>{{ row.row_label}}</small></td>
                 <td
                   class="tw-h-7 tw-w-7 tw-border tw-text-center tw-cursor-pointer tw-rounded tw-text-slate-300 tw-border-slate-300 hover:tw-bg-green-400 hover:tw-border-green-500 hover:tw-text-white tw-text-sm"
@@ -85,11 +85,19 @@ export default {
     },
     methods:{
         async getSchema(){
-            const {data} = await axios.get('schemas')
+            const {data} = await axios.get('schemas', {
+                headers: {
+                  'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             this.schemas = data.result
         },
         async getRows(){
-            const {data} = await axios.get('ranks')
+            const {data} = await axios.get('ranks', {
+                headers: {
+                  'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             this.ranks = data.result
         },
         showbloc(schema, index){
@@ -100,19 +108,19 @@ export default {
         rowClassification(row){
             switch (row) {
                 case 'A' :
-                    return 'red-600'
+                    return 'tw-border-red-600'
                     break;
                 case 'B' :
-                    return 'red-600'
+                    return 'tw-border-red-600'
                     break;
                 case 'C' :
-                    return 'green-600'
-                    break;  
+                    return 'tw-border-green-600'
+                    break;
                 case 'D' :
-                    return 'green-600'
+                    return 'tw-border-green-600'
                     break;   
                 case 'E' :
-                    return 'yellow-300'
+                    return 'tw-border-yellow-300'
                     break;   
             }
         },

@@ -117,19 +117,31 @@ export default {
     },
     methods:{
         async getShowtime(){
-            const { data } = await axios.get(`showtimes/${this.showtimeId}`)
+            const { data } = await axios.get(`showtimes/${this.showtimeId}`,{
+                headers: {
+                  'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             if(data.status){
                 return data.result
             }
         },
         async getTheater(){
-            const { data } = await axios.get(`theaters/${this.showtime.theater.theater_id}`)
+            const { data } = await axios.get(`theaters/${this.showtime.theater.theater_id}`, {
+                headers: {
+                  'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             if(data.status){
                 return data.result
             }
         },
         async getTicket(){
-            const { data } = await axios.post(`tickets`,this.ticket)
+            const { data } = await axios.post(`tickets`,this.ticket, {
+                headers: {
+                  'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             
             let type = 'error'
             if(data.status){

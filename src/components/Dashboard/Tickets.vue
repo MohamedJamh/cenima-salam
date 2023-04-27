@@ -66,7 +66,11 @@ export default {
     },  
     methods:{
         async getTickets(){
-            const {data} = await axios.get('tickets')
+            const {data} = await axios.get('tickets',{
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             if(data.status){
                 return data.result
             }

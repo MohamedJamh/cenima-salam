@@ -10,7 +10,7 @@
                 >
                     <td
                     class="tw-w-8 tw-border-r md:tw-border-r-2 tw-text-lg md:tw-text-2xl"
-                    :class="'tw-border-r-' + rowClassification(row.row_label)"
+                    :class="rowClassification(row.row_label)"
                     > <small>{{ row.row_label}}</small></td>
                     <td
                     class="tw-bg-zinc-800/80 tw-h-6 tw-w-6 md:tw-h-10 md:tw-w-10 tw-border tw-cursor-pointer tw-rounded tw-text-white/75 tw-border-slate-600 hover:tw-bg-green-400 hover:tw-border-green-500 hover:tw-text-white tw-text-xs md:tw-text-base tw-flex tw-items-center tw-justify-center"
@@ -60,7 +60,11 @@ export default {
     },
     methods:{
         async getRows(){
-            const {data} = await axios.get('ranks')
+            const {data} = await axios.get('ranks', {
+                headers: {
+                  'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             this.ranks = data.result
         },
         showbloc(schema, index , rowLabel){
@@ -73,19 +77,19 @@ export default {
         rowClassification(row){
             switch (row) {
                 case 'A' :
-                    return 'red-600'
+                    return 'tw-border-red-600'
                     break;
                 case 'B' :
-                    return 'red-600'
+                    return 'tw-border-red-600'
                     break;
                 case 'C' :
-                    return 'green-600'
+                    return 'tw-border-green-600'
                     break;
                 case 'D' :
-                    return 'green-600'
+                    return 'tw-border-green-600'
                     break;   
                 case 'E' :
-                    return 'yellow-300'
+                    return 'tw-border-yellow-300'
                     break;   
             }
         },

@@ -49,6 +49,9 @@ import beverageTypes from '@/components/Dashboard/BeverageTypes.vue'
 import theaters from '@/components/Dashboard/Theaters.vue'
 
 export default {
+    beforeCreate(){
+        if(!this.$store.getters.getUser) this.$router.push('/home')
+    },
     components:{
         movies,
         moviesTrash,

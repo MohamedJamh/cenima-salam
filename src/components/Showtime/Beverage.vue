@@ -39,7 +39,7 @@
     </div>
 </template>
 <script>
-export default {
+export default{
     props:['beverages'],
     created(){
         

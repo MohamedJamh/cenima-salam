@@ -52,75 +52,112 @@ export default createStore({
             }
         },
         async logout({ commit }){
+            await axios.post('logout',{},{
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             commit('destroyUser')
-            await axios.post('logout')
             localStorage.removeItem('token')
-            router.push('/')
+            router.push('/home')
         },
         // movies
         async getPopularMovies(){
-            const response = await axios.get('home/popularMovie')
+            const response = await axios.get('home/popularMovie', {
+                headers: {
+                  'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             return response.data.result
         },
         async getPremierMovies(){
-            const response = await axios.get('home/premierMovie')
+            const response = await axios.get('home/premierMovie', {
+                headers: {
+                  'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             return response.data.result
         },
         async getUpcomingMovies(){
-            const response = await axios.get('home/upcomingMovie')
+            const response = await axios.get('home/upcomingMovie', {
+                headers: {
+                  'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             return response.data.result
         },
         async getAllMovies(){
-            const {data} = await axios.get('movies')
+            const {data} = await axios.get('movies', {
+                headers: {
+                  'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             if(data.status){
                 return data.result
             }
         },
         //showtimes
         async getShowtimes(){
-            const {data} = await axios.get('showtimes')
+            const {data} = await axios.get('showtimes', {
+                headers: {
+                  'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             if(data.status){
                 return data.result
             }
         },
         //genres
         async getGenres(){
-            const {data} = await axios.get('genres')
+            const {data} = await axios.get('genres', {
+                headers: {
+                  'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             if(data.status){
                 return data.result
             }
         },
         //Theaters
         async getTheaters(){
-            const {data} = await axios.get('theaters')
-            if(data.status){
-                return data.result
-            }
-        },
-        //Schemas
-        async getSchemas(){
-            const {data} = await axios.get('schemas')
+            const {data} = await axios.get('theaters', {
+                headers: {
+                  'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             if(data.status){
                 return data.result
             }
         },
         //companies
         async getCompanies(){
-            const {data} = await axios.get('production-companies')
+            const {data} = await axios.get('production-companies', {
+                headers: {
+                  'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             if(data.status){
                 return data.result
             }
         },
         //Beverage 
         async getBeverages(){
-            const {data} = await axios.get('beverages')
+            const {data} = await axios.get('beverages', {
+                headers: {
+                  'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             if(data.status){
                 return data.result
             }
         },
         //Beverage Types
         async getBeverageTypes(){
-            const {data} = await axios.get('beverage-types')
+            const {data} = await axios.get('beverage-types', {
+                headers: {
+                  'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             if(data.status){
                 return data.result
             }

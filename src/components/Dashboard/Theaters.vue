@@ -165,11 +165,8 @@ import { required, requiredIf } from '@vuelidate/validators'
 import validationError from '@/components/ValidationError.vue'
 export default {
     async created(){
-        this.initialise()
-        this.schemas = await this.$store.dispatch('getSchemas')
-        .then(data =>{
-            return data
-        })
+        await this.initialise()
+        await this.getSchemas()
     },
     setup: () => ({ v$: useVuelidate() }),
     data(){
@@ -209,6 +206,14 @@ export default {
                 return data
             })
         },
+        async getSchemas(){
+            const {data} = await axios.get('schemas', {
+                headers: {
+                  'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
+            this.schemas = data.result
+        },
         async validateForm(){
             const result = await this.v$.$validate()
             if (!result) return false
@@ -223,7 +228,11 @@ export default {
         },
         async updateTheater(){
             if(await this.validateForm()){
-                const { data } = await axios.patch(`theaters/${this.formRecord.id}`,this.formRecord)
+                const { data } = await axios.patch(`theaters/${this.formRecord.id}`,this.formRecord,{
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                    }
+                })
                 let type = 'error'
                 if(data.status){
                     type = 'success'
@@ -237,8 +246,11 @@ export default {
             }
         },
         async deleteTheater(id){
-            const { data } = await axios.delete(`theaters/${id}`)
-
+            const { data } = await axios.delete(`theaters/${id}`,{
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             let type = 'error'
             if(data.status){
                 type = 'success'
@@ -251,7 +263,11 @@ export default {
         },
         async addTheater(){
             if(await this.validateForm()){
-                const { data } = await axios.post(`theaters`,this.formRecord)
+                const { data } = await axios.post(`theaters`,this.formRecord,{
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                    }
+                })
                 let type = 'error'
                 if(data.status){
                     type = 'success'

@@ -175,6 +175,10 @@ export default {
             if(await this.validateForm()){
                 const { data } = await axios.patch(`genres/${this.formRecord.id}`,{
                     name : this.formRecord.name
+                },{
+                    headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                    }
                 })
                 let type = 'error'
                 if(data.status){
@@ -190,7 +194,11 @@ export default {
         },
         async deleteGenre(id){
             this.formRecord.id = id
-            const { data } = await axios.delete(`genres/${this.formRecord.id}`)
+            const { data } = await axios.delete(`genres/${this.formRecord.id}`,{
+                headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                }
+            })
             let type = 'error'
             if(data.status){
                 type = 'success'
@@ -205,6 +213,10 @@ export default {
             if(await this.validateForm()){
                 const { data } = await axios.post(`genres`,{
                     name : this.formRecord.name
+                },{
+                    headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token') 
+                    }
                 })
                 let type = 'error'
                 if(data.status){
